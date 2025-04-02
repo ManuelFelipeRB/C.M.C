@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    
+    <meta name="csrf-token" content="kdAKUxcbuNnRrfw4TAYDEW8D1wVOcHrelbzr7tbY">
+    <title>
+            Drop Downs
+                | Josh Admin Template
+            </title>
+
+    <!-- global css -->
+    <link href="https://demo.joshadmin.com/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="https://demo.joshadmin.com/css/app.css" rel="stylesheet" type="text/css" />
+
+
+
+    <!-- end of global css -->
+
+    <!--page level css-->
+    
+    <link type="text/css" href="https://demo.joshadmin.com/vendors/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/select2/css/select2-bootstrap.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/selectize/css/selectize.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/selectize/css/selectize.bootstrap3.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/iCheck/css/all.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/iCheck/css/line/line.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/bootstrap-switch/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/vendors/switchery/css/switchery.css" rel="stylesheet" />
+    <link href="https://demo.joshadmin.com/css/pages/formelements.css" rel="stylesheet" />
+    <!--end of page level css-->
+
+<body class="skin-josh">
+    <header class="header">
+        <a href="https://demo.joshadmin.com/admin" class="logo">
+            <img src="https://demo.joshadmin.com/img/logo.png" alt="logo">
+        </a>
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <div class="position-abs">
+                <a href="#menu" class="navbar-btn sidebar-toggle" data-bs-toggle="offcanvas" role="button">
+                    <div class="responsive_nav"></div>
+                </a>
+            </div>
+            <div class="navbar-right toggle ms-auto">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="dropdown messages-menu ">
+    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true"
+        aria-expanded="false"> <i class="livicon" data-name="message-flag" data-loop="true" data-color="#42aaca"
+            data-hovercolor="#42aaca" data-size="28"></i>
+    </a>
+
+
+    <ul class="dropdown-menu dropdown-messages mr-auto position-abs" aria-labelledby="dropdownMenuLink">
+            <li class="dropdown-title">Nothing to show</li>
+                                            <li class="footer">
+            <a href="https://demo.joshadmin.com/admin/emails/inbox">View all</a>
+        </li>
+    </ul>
+</li>
+                    <li class="dropdown notifications-menu">
+    <a href="#dropdownshow" class="dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="livicon" data-name="bell" data-loop="true" data-color="#e9573f" data-hovercolor="#e9573f"
+            data-size="28"></i>
+        <span class="label bg-warning">7</span>
+    </a>
+    <ul class=" notifications dropdown-menu drop_notify position-abs">
+        <li class="dropdown-title">You have 7 notifications</li>
+        <li>
+            <!-- inner menu: contains the actual data -->
+            <ul class=" menu remove_hovereffect">
+                <li class="dropdown-item">
+                    <i class="livicon danger" data-n="timer" data-s="20" data-c="white" data-hc="white"></i>
+                    <a href="#">after a long time</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        Just Now
+                    </small>
+                </li>
+                <li class="dropdown-item">
+                    <i class="livicon success" data-n="gift" data-s="20" data-c="white" data-hc="white"></i>
+                    <a href="#">Jef's Birthday today</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        Few seconds ago
+                    </small>
+                </li>
+                <li class="dropdown-item">
+                    <i class="livicon warning" data-n="dashboard" data-s="20" data-c="white" data-hc="white"></i>
+                    <a href="#">out of space</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        8 minutes ago
+                    </small>
+                </li>
+                <li class="dropdown-item">
+                    <i class="livicon bg-aqua" data-n="hand-right" data-s="20" data-c="white" data-hc="white"></i>
+                    <a href="#">New friend request</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        An hour ago
+                    </small>
+                </li>
+                <li class="dropdown-item">
+                    <i class="livicon danger" data-n="shopping-cart-in" data-s="20" data-c="white"
+                        data-hc="white"></i>
+                    <a href="#">On sale 2 products</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        3 Hours ago
+                    </small>
+                </li>
+                <li class="dropdown-item">
+                    <i class="livicon success" data-n="image" data-s="20" data-c="white" data-hc="white"></i>
+                    <a href="#">Lee Shared your photo</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        Yesterday
+                    </small>
+                </li>
+                <li class="dropdown-item">
+                    <i class="livicon warning" data-n="thumbs-up" data-s="20" data-c="white" data-hc="white"></i>
+                    <a href="#">David liked your photo</a>
+                    <small class="float-end">
+                        <span class="livicon p-2" data-n="timer" data-s="10"></span>
+                        2 July 2014
+                    </small>
+                </li>
+            </ul>
+        </li>
+        <li class="footer">
+            <a href="#">View all</a>
+        </li>
+    </ul>
+</li>
+                    <li class=" nav-item dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                                                            <img src="https://demo.joshadmin.com/images/authors/no_avatar.jpg" alt="img" height="35px"
+                                    width="35px" class="rounded-circle img-fluid float-start" />
+                                                        <div class="riot">
+                                <div>
+                                    <p class="user_name_max">John
+                                        Doec</p>
+                                    <span>
+                                        <i class="caret"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu position-abs">
+                            <!-- User image -->
+                            <li class="user-header bg-light-blue">
+                                                                    <img src="https://demo.joshadmin.com/images/authors/no_avatar.jpg" alt="img"
+                                        height="35px" width="35px" class="rounded-circle img-fluid float-start" />
+                                                                <p class="topprofiletext">John
+                                    Doec</p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li>
+                                <a href="https://demo.joshadmin.com/admin/users/1">
+                                    <i class="livicon" data-name="user" data-s="18"></i>
+                                    My Profile
+                                </a>
+                            </li>
+                            <li role="presentation"></li>
+                            <li>
+                                <a href="https://demo.joshadmin.com/admin/users/1/edit">
+                                    <i class="livicon" data-name="gears" data-s="18"></i>
+                                    Account Settings
+                                </a>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="float-start">
+                                    <a href="https://demo.joshadmin.com/admin/1/lockscreen">
+                                        <i class="livicon" data-name="lock" data-size="16" data-c="#555555"
+                                            data-hc="#555555" data-loop="true"></i>
+                                        Lock
+                                    </a>
+                                </div>
+                                <div class="float-end">
+                                    <a href="https://demo.joshadmin.com/admin/logout">
+                                        <i class="livicon" data-name="sign-out" data-s="18"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+    <div class="wrapper ">
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="left-side ">
+            <section class="sidebar ">
+                <div class="page-sidebar  sidebar-nav">
+                    <div class="nav_icons">
+                        <ul class="sidebar_threeicons">
+                            <li>
+                                <a href="https://demo.joshadmin.com/admin/advanced_tables">
+                                    <i class="livicon" data-name="table" title="Advanced tables" data-loop="true"
+                                        data-color="#418BCA" data-hc="#418BCA" data-s="25"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://demo.joshadmin.com/admin/tasks">
+                                    <i class="livicon" data-name="list-ul" title="Tasks" data-loop="true"
+                                        data-color="#e9573f" data-hc="#e9573f" data-s="25"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://demo.joshadmin.com/admin/gallery">
+                                    <i class="livicon" data-name="image" title="Gallery" data-loop="true"
+                                        data-color="#F89A14" data-hc="#F89A14" data-s="25"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://demo.joshadmin.com/admin/users">
+                                    <i class="livicon" data-name="user" title="Users" data-loop="true"
+                                        data-color="#6CC66C" data-hc="#6CC66C" data-s="25"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- BEGIN SIDEBAR MENU -->
+                    <ul id="menu" class="metismenu page-sidebar-menu">
+
+    <li >
+        <a href="https://demo.joshadmin.com/admin">
+            <i class="livicon" data-name="dashboard" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
+            <span class="title">Dashboard 1</span>
+        </a>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/index1">
+            <i class="livicon" data-name="dashboard" data-size="18" data-c="#EF6F6C" data-hc="#EF6F6C"
+                data-loop="true"></i>
+            Dashboard 2
+        </a>
+    </li>
+
+     <li >
+        <a href="http://crud.joshadmin.com/admin/generator_builder" target="_blank">
+            <i class="livicon" data-name="shield" data-size="18" data-c="#F89A14" data-hc="#F89A14" data-loop="true"></i>
+            CRUD Generator
+        </a>
+    </li>
+    <li >
+
+        <a href="https://demo.joshadmin.com/admin/log_viewers">
+            <i class="livicon" data-name="help" data-size="18" data-c="#1DA1F2" data-hc="#1DA1F2" data-loop="true"></i>
+            Log Viewer
+        </a>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/activity_log">
+            <i class="livicon" data-name="eye-open" data-size="18" data-c="#F89A14" data-hc="#F89A14"
+                data-loop="true"></i>
+            Activity Log
+        </a>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="medal" data-size="18" data-c="#6CC66C" data-hc="#6CC66C" data-loop="true"></i>
+            <span class="title">Laravel Examples</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/datatables">
+                    <i class="fa fa-angle-double-right"></i>
+                    Ajax Data Tables
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/editable_datatables">
+                    <i class="fa fa-angle-double-right"></i>
+                    Editable Data Tables
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/custom_datatables">
+                    <i class="fa fa-angle-double-right"></i>
+                    Custom Datatables
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/dropzone">
+                    <i class="fa fa-angle-double-right"></i>
+                    Drop Zone
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/multiple_upload">
+                    <i class="fa fa-angle-double-right"></i>
+                    Multiple File Upload
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/selectfilter">
+                    <i class="fa fa-angle-double-right"></i>
+                    Select2 Filters
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="barchart" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+                data-loop="true"></i>
+            <span class="title">Laravel Charts</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/laravel_charts">
+                    <i class="fa fa-angle-double-right"></i>
+                    Simple charts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/database_charts">
+                    <i class="fa fa-angle-double-right"></i>
+                    Database Charts
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="wrench" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
+                data-loop="true"></i>
+            <span class="title">Builders</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/form_builder2">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Builder 2
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/buttonbuilder">
+                    <i class="fa fa-angle-double-right"></i>
+                    Button Builder
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="mm-active">
+        <a href="#">
+            <i class="livicon" data-name="doc-portrait" data-c="#67C5DF" data-hc="#67C5DF" data-size="18"
+                data-loop="true"></i>
+            <span class="title">Forms</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/form_examples">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Examples
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/editor">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Editors
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/editor2">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Editors2
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/validation">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Validation
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/formelements">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Elements
+                </a>
+            </li>
+            <li class="active">
+                <a href="https://demo.joshadmin.com/admin/dropdowns">
+                    <i class="fa fa-angle-double-right"></i>
+                    Drop Downs
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/tailselect">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Elements Select I
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/tomselect">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Elements Select II
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/radio_checkbox">
+                    <i class="fa fa-angle-double-right"></i>
+                    Radio and Checkbox
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/ratings">
+                    <i class="fa fa-angle-double-right"></i>
+                    Ratings
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/form_layouts">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Layouts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/formwizard">
+                    <i class="fa fa-angle-double-right"></i>
+                    Form Wizards
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/datepicker">
+                    <i class="fa fa-angle-double-right"></i>
+                    Date Pickers
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/advanced_datepickers">
+                    <i class="fa fa-angle-double-right"></i>
+                    Advanced Date Pickers
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="brush" data-c="#F89A14" data-hc="#F89A14" data-size="18"
+                data-loop="true"></i>
+            <span class="title">UI Features</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/buttons">
+                    <i class="fa fa-angle-double-right"></i>
+                    Buttons
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/tabs_accordions">
+                    <i class="fa fa-angle-double-right"></i>
+                    Tabs and Accordions
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/cards">
+                    <i class="fa fa-angle-double-right"></i>
+                    Cards
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/icon">
+                    <i class="fa fa-angle-double-right"></i>
+                    Icon Fonts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/animatedicons">
+                    <i class="fa fa-angle-double-right"></i>
+                    Animated Icons
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/color">
+                    <i class="fa fa-angle-double-right"></i>
+                    Color Picker Slider
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/grid">
+                    <i class="fa fa-angle-double-right"></i>
+                    Grid Layout
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/carousel">
+                    <i class="fa fa-angle-double-right"></i>
+                    Carousel
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/tagsinput">
+                    <i class="fa fa-angle-double-right"></i>
+                    Tags Input
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/nestable_list">
+                    <i class="fa fa-angle-double-right"></i>
+                    Nestable List
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/sortable_list">
+                    <i class="fa fa-angle-double-right"></i>
+                    Sortable List
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/treeview_jstree">
+                    <i class="fa fa-angle-double-right"></i>
+                    Treeview and jsTree
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/toastr">
+                    <i class="fa fa-angle-double-right"></i>
+                    Toastr Notifications
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/sweetalert">
+                    <i class="fa fa-angle-double-right"></i>
+                    Sweet Alert
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/notifications">
+                    <i class="fa fa-angle-double-right"></i>
+                    Notifications
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/session_timeout">
+                    <i class="fa fa-angle-double-right"></i>
+                    Session Timeout
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/portlet_draggable">
+                    <i class="fa fa-angle-double-right"></i>
+                    Draggable Portlets
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="lab" data-c="#EF6F6C" data-hc="#EF6F6C" data-size="18"
+                data-loop="true"></i>
+            <span class="title">UI Components</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/general">
+                    <i class="fa fa-angle-double-right"></i>
+                    General Components
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/modals">
+                    <i class="fa fa-angle-double-right"></i>
+                    Modals
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/pickers">
+                    <i class="fa fa-angle-double-right"></i>
+                    Pickers
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/timeline">
+                    <i class="fa fa-angle-double-right"></i>
+                    Timeline
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/animations">
+                    <i class="fa fa-angle-double-right"></i>
+                    Animations
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/sliders">
+                    <i class="fa fa-angle-double-right"></i>
+                    Sliders
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/knob">
+                    <i class="fa fa-angle-double-right"></i>
+                    Circles Sliders
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="table" data-c="#418BCA" data-hc="#418BCA" data-size="18"
+                data-loop="true"></i>
+            <span class="title">DataTables</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/simple_table">
+                    <i class="fa fa-angle-double-right"></i>
+                    Simple tables
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/advanced_tables">
+                    <i class="fa fa-angle-double-right"></i>
+                    Advanced Data Tables
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/advanced_tables2">
+                    <i class="fa fa-angle-double-right"></i>
+                    Advanced Data Tables2
+                </a>
+            </li>
+
+            <li >
+                <a href="https://demo.joshadmin.com/admin/responsive_tables">
+                    <i class="fa fa-angle-double-right"></i>
+                    Responsive Datatables
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
+                data-loop="true"></i>
+            <span class="title">Charts</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/apexcharts">
+                    <i class="fa fa-angle-double-right"></i>
+                    Apex Charts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/piecharts">
+                    <i class="fa fa-angle-double-right"></i>
+                    Pie Charts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/charts_animation">
+                    <i class="fa fa-angle-double-right"></i>
+                    Animated Charts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/jscharts">
+                    <i class="fa fa-angle-double-right"></i>
+                    JS Charts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/sparklinecharts">
+                    <i class="fa fa-angle-double-right"></i>
+                    Sparkline Charts
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/tui-charts">
+                    <i class="fa fa-angle-double-right"></i>
+                    ToastUI Charts
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/calendar">
+            <i class="livicon" data-c="#F89A14" data-hc="#F89A14" data-name="calendar" data-size="18"
+                data-loop="true"></i>
+            Calendar
+            <span class="badge bg-danger event_count">7</span>
+        </a>
+    </li>
+    <li class='menu-dropdown'>
+        <a href="#">
+            <i class="livicon" data-name="mail" data-size="18" data-c="#67C5DF" data-hc="#67C5DF"
+                data-loop="true"></i>
+            <span>Email</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/emails/compose">
+                    <i class="fa fa-angle-double-right"></i> Compose
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/emails/inbox">
+                    <i class="fa fa-angle-double-right"></i> Inbox
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/emails/sent">
+                    <i class="fa fa-angle-double-right"></i> Sent
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/tasks">
+            <i class="livicon" data-c="#EF6F6C" data-hc="#EF6F6C" data-name="list-ul" data-size="18"
+                data-loop="true"></i>
+            Tasks
+            <span class="badge bg-danger" id="taskcount">4</span>
+        </a>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="image" data-c="#418BCA" data-hc="#418BCA" data-size="18"
+                data-loop="true"></i>
+            <span class="title">Gallery</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/gallery">
+                    <i class="fa fa-angle-double-right"></i>
+                    Gallery
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/masonry_gallery">
+                    <i class="fa fa-angle-double-right"></i>
+                    Masonry Gallery
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/imagecropping">
+                    <i class="fa fa-angle-double-right"></i>
+                    Image Cropping
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/imgmagnifier">
+                    <i class="fa fa-angle-double-right"></i>
+                    Image Magnifier
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="user" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
+                data-loop="true"></i>
+            <span class="title">Users</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/users">
+                    <i class="fa fa-angle-double-right"></i>
+                    Users
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/users/create">
+                    <i class="fa fa-angle-double-right"></i>
+                    Add New User
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/users/1">
+                    <i class="fa fa-angle-double-right"></i>
+                    View Profile
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/deleted_users">
+                    <i class="fa fa-angle-double-right"></i>
+                    Deleted Users
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="users" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+                data-loop="true"></i>
+            <span class="title">Roles</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/roles">
+                    <i class="fa fa-angle-double-right"></i>
+                    Roles List
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/roles/create">
+                    <i class="fa fa-angle-double-right"></i>
+                    Add New Role
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="map" data-c="#67C5DF" data-hc="#67C5DF" data-size="18"
+                data-loop="true"></i>
+            <span class="title">Maps</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/googlemaps">
+                    <i class="fa fa-angle-double-right"></i>
+                    Google Maps
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/vectormaps">
+                    <i class="fa fa-angle-double-right"></i>
+                    Vector Maps
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/advancedmaps">
+                    <i class="fa fa-angle-double-right"></i>
+                    Advanced Maps
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="comment" data-c="#F89A14" data-hc="#F89A14" data-size="18"
+                data-loop="true"></i>
+            <span class="title">Blog</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/blogcategory">
+                    <i class="fa fa-angle-double-right"></i>
+                    Blog Category List
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/blog">
+                    <i class="fa fa-angle-double-right"></i>
+                    Blog List
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/blog/create">
+                    <i class="fa fa-angle-double-right"></i>
+                    Add New Blog
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="move" data-c="#ef6f6c" data-hc="#ef6f6c" data-size="18"
+                data-loop="true"></i>
+            <span class="title">News</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/news">
+                    <i class="fa fa-angle-double-right"></i>
+                    News
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/news_item">
+                    <i class="fa fa-angle-double-right"></i>
+                    News Details
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/minisidebar">
+            <i class="livicon" data-name="list-ul" data-size="18" data-c="#F89A14" data-hc="#F89A14"
+                data-loop="true"></i>
+            Mini Sidebar
+        </a>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/fixedmenu">
+            <i class="livicon" data-name="list-ul" data-size="18" data-c="#1DA1F2" data-hc="#1DA1F2"
+                data-loop="true"></i>
+            Fixed Menu and Header
+        </a>
+    </li>
+    <li >
+        <a href="https://demo.joshadmin.com/admin/horizontal_layout">
+            <i class="livicon" data-name="list-ul" data-size="18" data-c="#1DA1F2" data-hc="#1DA1F2"
+                data-loop="true"></i>
+            Horizontal Layout
+        </a>
+    </li>
+    <li >
+        <a href="#">
+            <i class="livicon" data-name="flag" data-c="#418bca" data-hc="#418bca" data-size="18"
+                data-loop="true"></i>
+            <span class="title">Pages</span>
+            <span class="fas fa-angle-left"></span>
+        </a>
+        <ul class="sub-menu">
+            <li >
+                <a href="https://demo.joshadmin.com/admin/1/lockscreen">
+                    <i class="fa fa-angle-double-right"></i>
+                    Lockscreen
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/invoice">
+                    <i class="fa fa-angle-double-right"></i>
+                    Invoice
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/login">
+                    <i class="fa fa-angle-double-right"></i>
+                    Login
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/login2">
+                    <i class="fa fa-angle-double-right"></i>
+                    Login 2
+                </a>
+            </li>
+            <li>
+                <a href="https://demo.joshadmin.com/admin/login#toregister">
+                    <i class="fa fa-angle-double-right"></i>
+                    Register
+                </a>
+            </li>
+            <li>
+                <a href="https://demo.joshadmin.com/admin/register2">
+                    <i class="fa fa-angle-double-right"></i>
+                    Register2
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/404">
+                    <i class="fa fa-angle-double-right"></i>
+                    404 Error
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/500">
+                    <i class="fa fa-angle-double-right"></i>
+                    500 Error
+                </a>
+            </li>
+            <li >
+                <a href="https://demo.joshadmin.com/admin/blank">
+                    <i class="fa fa-angle-double-right"></i>
+                    Blank Page
+                </a>
+            </li>
+        </ul>
+    </li>
+    <!-- Menus generated by CRUD generator -->
+    </ul>
+                    <!-- END SIDEBAR MENU -->
+                </div>
+            </section>
+        </aside>
+        <aside class="right-side">
+
+            <!-- Notifications -->
+            <div id="notific">
+                            </div>
+
+            <!-- Content -->
+            
+    <section class="content-header">
+        <!--section starts-->
+        <h1>
+            Drop Downs
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="https://demo.joshadmin.com/admin">
+                    <i class="livicon" data-name="home" data-size="14" data-loop="true"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#">Forms</a>
+            </li>
+            <li class="active">
+                Drop Downs
+            </li>
+        </ol>
+    </section>
+    <!--section ends-->
+    <section class="content dropdownspage  ps-3 pe-3">
+        <!--main content-->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-lg-6 col-12 ">
+                <div class="card ">
+                    <div class="card-header bg-info text-white">
+                        <span>
+                            <i class="livicon" data-name="bell" data-size="16" data-loop="true" data-c="#fff"
+                                data-hc="white"></i>
+                            Select2
+                        </span>
+                        <span class="float-end ">
+                            <i class="fa fa-chevron-up clickable"></i>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="select21" class="form-label">
+                                Select2 single select
+                            </label>
+                            <select id="select21" class="form-select select2">
+                                <option value="">Select value...</option>
+                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                    <option value="AK">Alaska</option>
+                                    <option value="HI">Hawaii</option>
+                                </optgroup>
+                                <optgroup label="Pacific Time Zone">
+                                    <option value="CA">California</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="WA">Washington</option>
+                                </optgroup>
+                                <optgroup label="Mountain Time Zone">
+                                    <option value="AZ">Arizona</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="ND">
+                                        North Dakota
+                                    </option>
+                                    <option value="UT">Utah</option>
+                                    <option value="WY">Wyoming</option>
+                                </optgroup>
+                                <optgroup label="Central Time Zone">
+                                    <option value="AL">Alabama</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">
+                                        Mississippi
+                                    </option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="SD">
+                                        South Dakota
+                                    </option>
+                                    <option value="TX">Texas</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="WI">Wisconsin</option>
+                                </optgroup>
+                                <optgroup label="Eastern Time Zone">
+                                    <option value="CT">
+                                        Connecticut
+                                    </option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">
+                                        Massachusetts
+                                    </option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="NH">
+                                        New Hampshire
+                                    </option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">
+                                        North Carolina
+                                    </option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="PA">
+                                        Pennsylvania
+                                    </option>
+                                    <option value="RI">
+                                        Rhode Island
+                                    </option>
+                                    <option value="SC">
+                                        South Carolina
+                                    </option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WV">
+                                        West Virginia
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="select22" class="form-label">
+                                Select2 multi select
+                            </label>
+                            <select id="select22" class="form-select select2" multiple>
+                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                    <option value="AK">Alaska</option>
+                                    <option value="HI">Hawaii</option>
+                                </optgroup>
+                                <optgroup label="Pacific Time Zone">
+                                    <option value="CA">California</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="WA">Washington</option>
+                                </optgroup>
+                                <optgroup label="Mountain Time Zone">
+                                    <option value="AZ">Arizona</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="ND">
+                                        North Dakota
+                                    </option>
+                                    <option value="UT">Utah</option>
+                                    <option value="WY">Wyoming</option>
+                                </optgroup>
+                                <optgroup label="Central Time Zone">
+                                    <option value="AL">Alabama</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">
+                                        Mississippi
+                                    </option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="SD">
+                                        South Dakota
+                                    </option>
+                                    <option value="TX">Texas</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="WI">Wisconsin</option>
+                                </optgroup>
+                                <optgroup label="Eastern Time Zone">
+                                    <option value="CT">
+                                        Connecticut
+                                    </option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">
+                                        Massachusetts
+                                    </option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="NH">
+                                        New Hampshire
+                                    </option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">
+                                        North Carolina
+                                    </option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="PA">
+                                        Pennsylvania
+                                    </option>
+                                    <option value="RI">
+                                        Rhode Island
+                                    </option>
+                                    <option value="SC">
+                                        South Carolina
+                                    </option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WV">
+                                        West Virginia
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="select23" class="form-label">
+                                Select2 single select with country flag
+                            </label>
+                            <select id="select23" class="form-select select2">
+                                <option value="">Select a value...</option>
+                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                    <option value="AK">Alaska</option>
+                                    <option value="HI">Hawaii</option>
+                                </optgroup>
+                                <optgroup label="Pacific Time Zone">
+                                    <option value="CA">California</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="WA">Washington</option>
+                                </optgroup>
+                                <optgroup label="Mountain Time Zone">
+                                    <option value="AZ">Arizona</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="ND">
+                                        North Dakota
+                                    </option>
+                                    <option value="UT">Utah</option>
+                                    <option value="WY">Wyoming</option>
+                                </optgroup>
+                                <optgroup label="Central Time Zone">
+                                    <option value="AL">Alabama</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">
+                                        Mississippi
+                                    </option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="SD">
+                                        South Dakota
+                                    </option>
+                                    <option value="TX">Texas</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="WI">Wisconsin</option>
+                                </optgroup>
+                                <optgroup label="Eastern Time Zone">
+                                    <option value="CT">
+                                        Connecticut
+                                    </option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">
+                                        Massachusetts
+                                    </option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="NH">
+                                        New Hampshire
+                                    </option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">
+                                        North Carolina
+                                    </option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="PA">
+                                        Pennsylvania
+                                    </option>
+                                    <option value="RI">
+                                        Rhode Island
+                                    </option>
+                                    <option value="SC">
+                                        South Carolina
+                                    </option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WV">
+                                        West Virginia
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="select24" class="form-label">
+                                Select2 append
+                            </label>
+                            <div class="input-group flex-nowrap">
+                                <div class="radius_right overflow-hidden flex-grow-1">
+                                    <select id="select24" class="form-select">
+                                        <option value="">Select value...</option>
+                                        <optgroup label="Alaskan/Hawaiian Time Zone">
+                                            <option value="AK">Alaska</option>
+                                            <option value="HI">Hawaii</option>
+                                        </optgroup>
+                                        <optgroup label="Pacific Time Zone">
+                                            <option value="CA">California</option>
+                                            <option value="NV">Nevada</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="WA">Washington</option>
+                                        </optgroup>
+                                        <optgroup label="Mountain Time Zone">
+                                            <option value="AZ">Arizona</option>
+                                            <option value="CO">Colorado</option>
+                                            <option value="ID">Idaho</option>
+                                            <option value="MT">Montana</option>
+                                            <option value="NE">Nebraska</option>
+                                            <option value="NM">New Mexico</option>
+                                            <option value="ND">
+                                                North Dakota
+                                            </option>
+                                            <option value="UT">Utah</option>
+                                            <option value="WY">Wyoming</option>
+                                        </optgroup>
+                                        <optgroup label="Central Time Zone">
+                                            <option value="AL">Alabama</option>
+                                            <option value="AR">Arkansas</option>
+                                            <option value="IL">Illinois</option>
+                                            <option value="IA">Iowa</option>
+                                            <option value="KS">Kansas</option>
+                                            <option value="KY">Kentucky</option>
+                                            <option value="LA">Louisiana</option>
+                                            <option value="MN">Minnesota</option>
+                                            <option value="MS">
+                                                Mississippi
+                                            </option>
+                                            <option value="MO">Missouri</option>
+                                            <option value="OK">Oklahoma</option>
+                                            <option value="SD">
+                                                South Dakota
+                                            </option>
+                                            <option value="TX">Texas</option>
+                                            <option value="TN">Tennessee</option>
+                                            <option value="WI">Wisconsin</option>
+                                        </optgroup>
+                                        <optgroup label="Eastern Time Zone">
+                                            <option value="CT">
+                                                Connecticut
+                                            </option>
+                                            <option value="DE">Delaware</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="GA">Georgia</option>
+                                            <option value="IN">Indiana</option>
+                                            <option value="ME">Maine</option>
+                                            <option value="MD">Maryland</option>
+                                            <option value="MA">
+                                                Massachusetts
+                                            </option>
+                                            <option value="MI">Michigan</option>
+                                            <option value="NH">
+                                                New Hampshire
+                                            </option>
+                                            <option value="NJ">New Jersey</option>
+                                            <option value="NY">New York</option>
+                                            <option value="NC">
+                                                North Carolina
+                                            </option>
+                                            <option value="OH">Ohio</option>
+                                            <option value="PA">
+                                                Pennsylvania
+                                            </option>
+                                            <option value="RI">
+                                                Rhode Island
+                                            </option>
+                                            <option value="SC">
+                                                South Carolina
+                                            </option>
+                                            <option value="VT">Vermont</option>
+                                            <option value="VA">Virginia</option>
+                                            <option value="WV">
+                                                West Virginia
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <button class="btn btn-secondary input-group-text" type="button">
+                                    <span class="fa fa-search"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="single-prepend-text1" class="form-label">Select2 prepend</label>
+                            <div class="input-group">
+                                <button class="btn btn-secondary input-group-text" type="button"
+                                    data-select2-open="single-prepend-text1">
+                                    <span class="fa fa-search"></span>
+                                </button>
+                                <select id="single-prepend-text" class="form-select select2-single">
+                                    <option></option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-table-cell">
+                            <label for=" multi-append select26" class="form-label">
+                                Select2 multi append
+                            </label>
+                            <div class="input-group flex-nowrap">
+                                <div
+                                    class="select2-bootstrap-append dropdowns-select-multiappend radius_right overflow-hidden flex-grow-1 ">
+                                    <select id="select26 multi-append" class="form-select select2">
+                                        <option value="">Select value...</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </div>
+                                <div class="input-group-text radius_left p-0 m-0 ">
+                                    <button class="btn btn-secondary remove_radius" type="button"
+                                        data-select2-open="multi-append">
+                                        <span class="fa fa-search"></span>
+                                    </button>
+                                    <button class="btn btn-secondary remove_radius" type="button"
+                                        data-select2-open="multi-prepend">State
+                                    </button>
+                                    <button type="button" class="btn btn-secondary dropdown-toggle radius_left"
+                                        data-bs-toggle="dropdown">
+                                        Action
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#" class="dropdown-item">Action</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item">
+                                                Another action
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item">
+                                                Something else here
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="#" class="dropdown-item">
+                                                Separated link
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ends-->
+                    </div>
+                </div>
+                <div class="card m-b-50 my-3">
+                    <div class="card-header bg-warning text-white">
+                        <span>
+                            <i class="livicon" data-name="spinner-one" data-size="16" data-loop="true" data-c="#fff"
+                                data-hc="white"></i>
+                            Selectize Tagging and Select
+                        </span>
+                        <span class="float-end ">
+                            <i class="fa fa-chevron-up clickable"></i>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="box-body">
+                            <!-- Time Picker -->
+                            <div class="mb-3">
+                                <label for="select-gear">Default Selectize:</label>
+                                <select id="select-gear" placeholder="Select gear...">
+                                    <optgroup label="Climbing">
+                                        <option value="pitons">Pitons</option>
+                                        <option value="cams">Cams</option>
+                                        <option value="nuts">Nuts</option>
+                                        <option value="bolts">Bolts</option>
+                                        <option value="stoppers">Stoppers</option>
+                                        <option value="sling">Sling</option>
+                                    </optgroup>
+                                    <optgroup label="Skiing">
+                                        <option value="skis">Skis</option>
+                                        <option value="skins">Skins</option>
+                                        <option value="poles">Poles</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <!-- /.form group -->
+                            <!-- time Picker -->
+                            <div class="mb-3">
+                                <label class="form-label" for="selectize3">Selectize with max limit:</label>
+                                <select id="selectize3">
+                                    <option value="">Select gear...</option>
+                                    <option value="pitons">Pitons</option>
+                                    <option value="cams">Cams</option>
+                                    <option value="nuts">Nuts</option>
+                                    <option value="bolts">Bolts</option>
+                                    <option value="stoppers">Stoppers</option>
+                                    <option value="sling">Sling</option>
+                                    <option value="skis">Skis</option>
+                                    <option value="skins">Skins</option>
+                                    <option value="poles">Poles</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="selectize-tags1">Selectize Tags:</label>
+                                <input type="text" id="selectize-tags1" class="form-control"
+                                    value="web development,design">
+                                <p>Press the [backspace] key and go back to editing the item without it being fully
+                                    removed.</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="selectize-tags2">Selectize Tags with remove
+                                    button:</label>
+                                <input type="text" id="selectize-tags2" class="demo-default"
+                                    value="science,biology,chemistry,physics">
+                                <p>This selectize adds classic a classic remove button to each item for behavior that mimics
+                                    Select2 and Chosen.</p>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <!-- /.form group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+                <!--select-->
+            </div>
+            <!--col-md-6 ends-->
+            <!--col-md-6 ends-->
+            <div class="col-md-12 col-sm-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-header bg-primary text-white ">
+                        <span>
+                            <i class="livicon" data-name="camcoder" data-size="16" data-loop="true" data-c="#fff"
+                                data-hc="white"></i>
+                            Bootstrap Multi-select
+                        </span>
+                        <span class="float-end ">
+                            <i class="fa fa-chevron-up clickable"></i>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="box-body bg_radius button-border">
+                            <div class="mb-3">
+                                <label for="multiselect1">Single Select using Radio:</label>
+                                <select id="multiselect1">
+                                    <option value="cheese">Cheese</option>
+                                    <option value="tomatoes">Tomatoes</option>
+                                    <option value="mozarella">Mozzarella</option>
+                                    <option value="mushrooms">Mushrooms</option>
+                                    <option value="pepperoni">Pepperoni</option>
+                                    <option value="onions">Onions</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="multiselect2">Multi Select using checkbox:</label>
+                                <select id="multiselect2" multiple="multiple">
+                                    <option value="cheese">Cheese</option>
+                                    <option value="tomatoes">Tomatoes</option>
+                                    <option value="mozarella">Mozzarella</option>
+                                    <option value="mushrooms">Mushrooms</option>
+                                    <option value="pepperoni">Pepperoni</option>
+                                    <option value="onions">Onions</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+            <!--col-md-6 ends-->
+        </div>
+        <!--main content ends-->
+    </section>
+    <!-- content -->
+
+
+        </aside>
+        <!-- right-side -->
+    </div>
+    <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+        title="Return to top" data-bs-toggle="tooltip" data-bs-placement="left">
+        <i class="livicon" data-name="plane-up" data-size="18" data-loop="true" data-c="#fff"
+            data-hc="white"></i>
+    </a>
+    <!-- global js -->
+
+    <script src="https://demo.joshadmin.com/js/admin.js" type="text/javascript"></script>
+
+
+<!-- end of global js -->
+<!-- begin page level js -->
+    <script language="javascript" type="text/javascript"
+        src="https://demo.joshadmin.com/vendors/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/select2/js/select2.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/select2/js/select2.js"></script>
+
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/sifter/sifter.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/microplugin/microplugin.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/selectize/js/selectize.min.js">
+    </script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/iCheck/js/icheck.js"></script>
+    <script language="javascript" type="text/javascript"
+        src="https://demo.joshadmin.com/vendors/bootstrap-switch/js/bootstrap-switch.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/switchery/js/switchery.js"></script>
+    <script language="javascript" type="text/javascript"
+        src="https://demo.joshadmin.com/vendors/bootstrap-maxlength/js/bootstrap-maxlength.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/vendors/card/js/jquery.card.js"></script>
+    <script language="javascript" type="text/javascript" src="https://demo.joshadmin.com/js/pages/custom_elements.js"></script>
+
+        <!-- end page level js -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1Y310Z8HGY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1Y310Z8HGY');
+</script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+
+</html>

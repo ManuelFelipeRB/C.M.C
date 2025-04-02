@@ -1,0 +1,13 @@
+[
+  {
+    "id": "W20250320093242",
+    "date": "2025-03-20",
+    "time": "09:32:42",
+    "product": "jabon",
+    "operator": "otro",
+    "gross_weight": 3.14,
+    "tare_weight": 1.13,
+    "net_weight": 2.01,
+    "notes": ""
+  }
+]

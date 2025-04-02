@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        .navigation {
+            background-color: #8c4191; /* Azul oscuro */
+            width: px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+            <style>
+            .recentOrders {
+                background-color: #6061ad2c; /* Azul oscuro */
+                padding: 10px;
+                position: fixed;
+                width: auto; 
+                max-height: 700px; /* Ajusta según tu diseño */
+                overflow-y: auto; /* Permite desplazamiento si es necesario */
+                color: rgba(27, 27, 27, 0.815);
+            }
+            </style>       
+
+            <style>
+                .recentCustomers {
+                    background-color: #6061ad2c; /* Azul oscuro */
+                    padding: 10px;
+                    width: auto; 
+                    max-height: 200px; /* Ajusta según tu diseño */
+                    overflow-x: auto; /* Permite desplazamiento si es necesario */
+                    color: rgba(27, 27, 27, 0.815);
+                }
+            </style>
+        </style>
+</head>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="logo-vue"></ion-icon>
+                        </span>
+                        <span class="title">Control de Carga </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="bus-outline"></ion-icon>
+                        </span>
+                        <span class="title">Enturnamiento</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="speedometer-outline"></ion-icon>
+                        </span>
+                        <span class="title">Báscula</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="logo-docker"></ion-icon>
+                        </span>
+                        <span class="title">Anuncios</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="bar-chart-outline"></ion-icon>
+                        </span>
+                        <span class="title">Reportes</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Configuración</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        <span class="title">Contraseña</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Salir</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                <div class="search">
+                    <label>
+                        <input type="text" placeholder="Search here">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </label>
+                </div>
+
+                <div class="user">
+                    <img src="{{ url_for('static', filename='imgs/customer01.jpg') }}" alt="Customer">
+                </div>
+            </div>
+
+<!-- Reemplaza tu cardBox con este código -->
+<div class="cardBox">
+    <div class="card" onclick="aplicarFiltro('todos')">
+        <div>
+            <div class="numbers">{{ total_pesajes1 }}</div>
+            <div class="cardName">Total Enturnados</div>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="eye-outline"></ion-icon>
+        </div>
+    </div>
+
+    <div class="card" onclick="aplicarFiltro('en_proceso')">
+        <div>
+            <div class="numbers">{{ total_proceso }}</div>
+            <div class="cardName">Proceso</div>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="git-compare-outline"></ion-icon>
+        </div>
+    </div>
+
+    <div class="card" onclick="aplicarFiltro('finalizado')">
+        <div>
+            <div class="numbers">{{ total_finalizados }}</div>
+            <div class="cardName">Finalizado</div>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+        </div>
+    </div>
+
+    <div class="card" onclick="aplicarFiltro('pendiente')">
+        <div>
+            <div class="numbers">{{ total_pendiente }}</div>
+            <div class="cardName">Pendientes</div>
+        </div>
+        <div class="iconBx">
+            <ion-icon name="warning-outline"></ion-icon>
+        </div>
+    </div>
+</div>
+
+<!-- Agrega este script justo antes del cierre del body -->
+<script>
+    // Función para aplicar el filtro al hacer clic en las tarjetas
+    function aplicarFiltro(filtro) {
+        // Resalta visualmente la tarjeta seleccionada
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Encontrar la tarjeta clickeada y aplicar clase activa
+        event.currentTarget.classList.add('active');
+        
+        // Redireccionar a la misma página con el parámetro de filtro
+        window.location.href = '/api/pesajes?filtro=' + filtro;
+    }
+    
+    // Marcar la tarjeta activa al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener el filtro actual de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const filtroActivo = urlParams.get('filtro') || 'todos';
+        
+        // Seleccionar todos los cards
+        const cards = document.querySelectorAll('.card');
+        
+        // Determinar qué tarjeta debe estar activa
+        let index = 0;
+        switch(filtroActivo) {
+            case 'todos': index = 0; break;
+            case 'en_proceso': index = 1; break;
+            case 'finalizado': index = 2; break;
+            case 'pendiente': index = 3; break;
+        }
+        
+        // Aplicar la clase activa
+        if (cards[index]) {
+            cards[index].classList.add('active');
+        }
+    });
+</script>
+
+            <!-- ================ Order Details List ================= -->
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Enturnados</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+
+                    <table id="tablaPesa1">
+                        <thead>
+                            <tr>
+                                <td>Nombre Conductor</td>
+                                <td>Placa</td>
+                                <td>Producto</td>
+                                <td>Proceso</td>
+                                <td>Cliente</td>
+                                <td>Estado</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pesaje in pesajes1_data %}
+                                <tr>
+                                    <td>{{ pesaje.NombreConductor }}</td>
+                                    <td>{{ pesaje.Placa }}</td>
+                                    <td>{{ pesaje.Producto }}</td>
+                                    <td>{{ pesaje.Proceso }}</td>
+                                    <td>{{ pesaje.Cliente }}</td>
+                                    <td>            
+                                        <span class="status  
+                                        {% if pesaje.Estado == 'Finalizado' %}delivered
+                                        {% elif pesaje.Estado == 'En proceso' %}pending
+                                        {% elif pesaje.Estado == 'Enturnado' %}return
+                                        {% elif pesaje.Estado == 'No enturnado' %}inProgress
+                                        {% elif pesaje.Estado == 'Anunciado' %}anunciado
+                                        {% elif pesaje.Estado == 'Autorizado' %}autorizado
+                                        {% elif pesaje.Estado == 'En inspeccion' %}inspeccion
+                                        {% elif pesaje.Estado == 'Revision documental' %}revision
+                                        {% elif pesaje.Estado == 'Transito entrando' %}entrando
+                                        {% elif pesaje.Estado == 'Transito saliendo' %}saliendo
+                                        {% elif pesaje.Estado == 'Ingresó' %}ingreso
+                                        {% else %}canceled{% endif %}">
+                                        {{ pesaje.Estado }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
