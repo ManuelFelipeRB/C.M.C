@@ -1,5 +1,9 @@
 import flet as ft
 
+import subprocess
+import os
+import sys
+
 from datetime import datetime
 from common.database_manager import DatabaseManager
 from EditVehicle_modal import EditVehicleModal
@@ -13,12 +17,15 @@ from common.stat_card import StatCard
 from views.cmc_view import CMCView
 from views.enturne_view import EnturneView
 from views.bascula_view import BasculaView
+from views.Documentation import DocumentationView
 
 class ControlCargaApp:
+
     def __init__(self, page):
         self.page = page
         self.setup_page()
-        
+    
+
         # Colores personalizados
         self.color_principal = "#8c4191"  # Morado
         self.color_secundario = "#f1ffff"  # Azul claro
@@ -53,7 +60,8 @@ class ControlCargaApp:
         )
         self.top_bar = self.ui_components.create_top_bar(
             self.toggle_menu,
-            self.filter_manager.get_search_container()
+            self.filter_manager.get_search_container(),
+            self.open_documentation  # Pasar el manejador de notificaciones
         )
         self.data_table = self.ui_components.create_data_table()
         self.stat_cards = self.create_stat_cards()
@@ -67,6 +75,10 @@ class ControlCargaApp:
             self.pagination,
             self.update_data
         )
+        self.documentation_view = DocumentationView(page, self.color_principal, self.color_secundario)
+        self.view_docs = self.documentation_view.get_view()
+
+
         self.enturne_view = EnturneView(page, self.color_principal)
         self.bascula_view = BasculaView(page, self.color_principal, self.color_secundario)
         
@@ -185,6 +197,7 @@ class ControlCargaApp:
         self.view_cmc.visible = False
         self.view_enturne.visible = False
         self.view_bascula.visible = False
+        self.view_docs.visible = False  # Añadir la vista de documentación
         
         # Mostrar solo la vista actual
         if self.current_view == "cmc":
@@ -193,6 +206,8 @@ class ControlCargaApp:
             self.view_enturne.visible = True
         elif self.current_view == "bascula":
             self.view_bascula.visible = True
+        elif self.current_view == "docs":
+            self.view_docs.visible = True  # Mostrar documentación cuando se selecciona
             
         self.page.update()
             
@@ -225,6 +240,7 @@ class ControlCargaApp:
                         self.view_cmc,      # Vista de CMC
                         self.view_enturne,  # Vista de Enturne
                         self.view_bascula,  # Vista de Báscula
+                        self.view_docs,     # Vista de Documentación
                     ]
                 )
             ],
@@ -339,6 +355,24 @@ class ControlCargaApp:
         """Callback para cuando un vehículo ha sido actualizado"""
         # Refrescar los datos después de la actualización
         self.refresh_data()
+
+    def open_documentation(self, e):
+        """Cambia a la vista de documentación cuando se hace clic en el icono de notificaciones"""
+        # Guardar la vista actual para poder volver después
+        self.previous_view = self.current_view
+        
+        # Cambiar a la vista de documentación
+        self.current_view = "docs"
+        self.update_view()
+        
+        # Mostrar un snackbar para informar al usuario cómo volver
+        self.page.snack_bar = ft.SnackBar(
+            content=ft.Text("Mostrando documentación. Usa el menú lateral para volver."),
+            bgcolor=self.color_principal,
+            action="OK",
+        )
+        self.page.snack_bar.open = True
+        self.page.update()
 
 # Función principal para iniciar la aplicación
 def main(page: ft.Page):

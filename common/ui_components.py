@@ -1,4 +1,10 @@
 import flet as ft
+
+import flet as ft
+import subprocess
+import os
+import sys
+
 from datetime import datetime
 
 class UIComponents:
@@ -46,15 +52,17 @@ class UIComponents:
     def create_data_table(self):
         return ft.DataTable(
             columns=[
-                ft.DataColumn(ft.Text("#", size=13, weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("CONDUCTOR", size=13)),
-                ft.DataColumn(ft.Text("PLACA", size=13)),
-                ft.DataColumn(ft.Text("PRODUCTO", size=13)),
-                ft.DataColumn(ft.Text("PROCESO", size=13)),
-                ft.DataColumn(ft.Text("CLIENTE", size=13)),
-                ft.DataColumn(ft.Text("ESTADO", size=13)),
-                ft.DataColumn(ft.Text("EDIT", size=13)),  # Nueva columna para acciones
+                ft.DataColumn(ft.Text("#", size=13, weight=ft.FontWeight.BOLD, color=self.color_principal)),
+                ft.DataColumn(ft.Text("CONDUCTOR", size=13, color=self.color_principal)),
+                ft.DataColumn(ft.Text("PLACA", size=13, color=self.color_principal)),
+                ft.DataColumn(ft.Text("PRODUCTO", size=13, color=self.color_principal)),
+                ft.DataColumn(ft.Text("PROCESO", size=13, color=self.color_principal)),
+                ft.DataColumn(ft.Text("CLIENTE", size=13, color=self.color_principal)),
+                ft.DataColumn(ft.Text("ESTADO", size=13, color=self.color_principal)),
+                # Mantenemos una columna simple para "Acción" pero con un título vacío para que sea más discreta
+                ft.DataColumn(ft.Text("", size=13 )),
             ],
+            
             rows=[],
             border=ft.border.all(1, ft.Colors.GREY_300),
             border_radius=6,
@@ -79,13 +87,15 @@ class UIComponents:
             estado = item['Estado']
             color_estado = self.get_estado_color(estado)
             
-            # Botón de edición con captura correcta del ID
+            # Obtener el ID del vehículo
             vehicle_id = item['ID']
+            
+            # Crear un botón más sutil y elegante
             edit_button = ft.IconButton(
-                icon=ft.Icons.EDIT,
+                icon=ft.Icons.EDIT_NOTE,  # Icono de edición de notas, más sutil
                 icon_color=self.color_principal,
-                tooltip="Editar registro",
-                data=vehicle_id,
+                tooltip="Editar detalles",
+                icon_size=20,  # Tamaño más pequeño
                 on_click=lambda e, id=vehicle_id: self.on_edit_click(id) if self.on_edit_click else None
             )
             
@@ -95,7 +105,7 @@ class UIComponents:
                         # Celda de numeración
                         ft.DataCell(ft.Text(str(row_number), size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
                         ft.DataCell(ft.Text(item['NombreConductor'], size=11)),
-                        ft.DataCell(ft.Text(item['Placa'], size=12, weight=ft.FontWeight.BOLD)),
+                        ft.DataCell(ft.Text(item['Placa'], size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
                         ft.DataCell(ft.Text(item['Producto'], size=11)),
                         ft.DataCell(ft.Text(item['Proceso'], size=11)),
                         ft.DataCell(ft.Text(item['Cliente'], size=11)),
@@ -118,6 +128,7 @@ class UIComponents:
                                 alignment=ft.alignment.center
                             )
                         ),
+                        # Botón de edición mejorado
                         ft.DataCell(edit_button)
                     ]
                 )
@@ -147,24 +158,11 @@ class UIComponents:
             # Agregar header con el botón de fecha
             leading=ft.Container(
                 content=ft.Column([
-
-                    # ft.Image(
-                    #     src=r"\\TTRAFEJT2K02\User$\Manuel.Rodriguez\enturne\Dashboard Responsive\static\imgs\Vector.png",
-                    #     width=100,
-                    #     height=100,
-                    #     color=ft.Colors.WHITE,
-                    # ),
-                    
-                    # # Nuevo divisor
-                    # ft.Divider(color=ft.Colors.WHITE54),
-                    # # Contenido original
-
                     ft.Text(
                         "Fecha de Folio:", 
                         color=self.color_secundario,
                         size=14,
                         weight=ft.FontWeight.BOLD
-                        
                     ),
                     ft.Container(
                         content=self.fecha_button,
@@ -176,10 +174,9 @@ class UIComponents:
             ),
             
             destinations=[
-                
                 ft.NavigationRailDestination(
-                    icon_content=ft.Icon(ft.Icons.DASHBOARD_OUTLINED, color=self.color_secundario, size=30),
-                    selected_icon_content=ft.Icon(ft.Icons.DASHBOARD_SHARP, color=self.color_principal, size=30),
+                    icon_content=ft.Icon(ft.Icons.DASHBOARD_OUTLINED, color=self.color_secundario, size=20),
+                    selected_icon_content=ft.Icon(ft.Icons.DASHBOARD_SHARP, color=self.color_principal, size=20),
                     label_content=(
                         ft.Text(
                             "C . M . C",
@@ -191,8 +188,8 @@ class UIComponents:
                 ),
                 
                 ft.NavigationRailDestination(
-                    icon_content=ft.Icon(ft.Icons.DEPARTURE_BOARD_OUTLINED, color=self.color_secundario, size=30),
-                    selected_icon_content=ft.Icon(ft.Icons.DEPARTURE_BOARD, color=self.color_principal, size=30),
+                    icon_content=ft.Icon(ft.Icons.DEPARTURE_BOARD_OUTLINED, color=self.color_secundario, size=20),
+                    selected_icon_content=ft.Icon(ft.Icons.DEPARTURE_BOARD, color=self.color_principal, size=20),
                     label_content=(
                         ft.Text(
                             "Enturne",
@@ -204,8 +201,8 @@ class UIComponents:
                 ),
 
                 ft.NavigationRailDestination(
-                    icon_content=ft.Icon(ft.Icons.SCALE_OUTLINED, color=self.color_secundario, size=30),
-                    selected_icon_content=ft.Icon(ft.Icons.SCALE, color=self.color_principal, size=30),
+                    icon_content=ft.Icon(ft.Icons.SCALE_OUTLINED, color=self.color_secundario, size=20),
+                    selected_icon_content=ft.Icon(ft.Icons.SCALE, color=self.color_principal, size=20),
                     label_content=(
                         ft.Text(
                             "Báscula",
@@ -236,7 +233,7 @@ class UIComponents:
             )
         )
     
-    def create_top_bar(self, menu_toggle_func, search_container):
+    def create_top_bar(self, menu_toggle_func, search_container, notification_click_handler):
         return ft.Container(
             content=ft.Row(
                 [
@@ -247,7 +244,13 @@ class UIComponents:
                         icon_size=25,
                     ),
                     search_container,
-                    ft.IconButton(icon=ft.Icons.NOTIFICATIONS, icon_color=ft.Colors.GREY_600, alignment=ft.alignment.top_right),
+                    ft.IconButton(
+                        icon=ft.Icons.HELP_SHARP, 
+                        icon_color=ft.Colors.GREY_600, 
+                        alignment=ft.alignment.top_right,
+                        on_click=notification_click_handler,  # Agregar el manejador de eventos
+                        tooltip="Abrir documentación"  # Tooltip informativo
+                    ),
                     ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.GREY_600),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,

@@ -24,7 +24,7 @@ class StatCard:
                             spacing=5,
                             alignment=ft.MainAxisAlignment.CENTER,
                         ),
-                        ft.Icon(self.icon, size=40, color=self.color),
+                        ft.Icon(self.icon, size=35, color=self.color),
                     ],
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     expand=True,
@@ -87,7 +87,7 @@ class StatCard:
         container = self.card.content
         row = container.content
         
-        container.bgcolor = "#edffff"
+        container.bgcolor = ft.Colors.TRANSPARENT
         
         column = row.controls[0]
         value_text = column.controls[0]

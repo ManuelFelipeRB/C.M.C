@@ -50,7 +50,7 @@ class CMCView:
                                 bgcolor=ft.colors,
                                 border_radius=10,
                                 expand=True,
-                                height=730,
+                                height=690,
                             ),
                             self.pagination.get_controls(),
                         ],

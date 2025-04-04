@@ -42,7 +42,8 @@ class EditVehicleModal:
             border_color=ft.Colors.GREY_400,
             border_radius=8,
             enable_filter=True,
-            bgcolor=ft.Colors.WHITE,
+            filled=True,
+            fill_color=ft.Colors.WHITE54    
         )
         # Botones
         self.guardar_btn = ft.ElevatedButton(
