@@ -24,7 +24,7 @@ class FilterManager:
             suffix_icon=self.clear_button,  # Agregar el botón como sufijo
             border_radius=20,
             border_color=ft.Colors.GREY_400,
-            height=30,
+            height=40,
             width=400,
             on_change=self.on_search_change
         )

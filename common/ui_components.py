@@ -8,9 +8,9 @@ import sys
 from datetime import datetime
 
 class UIComponents:
-    def __init__(self, page, color_principal="#8c4191"):
+    def __init__(self, page, color_principal):
         self.page = page
-        self.color_principal = color_principal
+        self.color_principal ="#9C5BAC" # color_principal #8c4191
         self.color_secundario = "#f1ffff"
         self.fecha_button = None  # Referencia al botón de fecha
         self.on_edit_click = None  # Callback para el evento de edición
@@ -59,17 +59,21 @@ class UIComponents:
                 ft.DataColumn(ft.Text("PROCESO", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("CLIENTE", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("ESTADO", size=13, color=self.color_principal)),
-                # Mantenemos una columna simple para "Acción" pero con un título vacío para que sea más discreta
+                ft.DataColumn(ft.Text("MANIFIESTO", size=13, color=self.color_principal)),  # Cambiado a "MANEJAR"
                 ft.DataColumn(ft.Text("", size=13 )),
+                
             ],
             
             rows=[],
-            border=ft.border.all(1, ft.Colors.GREY_300),
+            heading_row_color=ft.colors.BLUE_GREY_50,
+            border=ft.border.all(1, ft.Colors.GREY_200),
             border_radius=6,
-            vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
-            horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+            vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
+            horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
             sort_column_index=0,
-            column_spacing=8,
+            column_spacing=6,
+            width=100,
+            divider_thickness=0,
             heading_row_height=30,
             data_row_min_height=25,
             data_row_max_height=35,
@@ -103,7 +107,7 @@ class UIComponents:
                 ft.DataRow(
                     cells=[
                         # Celda de numeración
-                        ft.DataCell(ft.Text(str(row_number), size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
+                        ft.DataCell(ft.Text(str(row_number), size=12, weight=ft.FontWeight.BOLD, color=ft.Colors.DEEP_PURPLE_900)),
                         ft.DataCell(ft.Text(item['NombreConductor'], size=11)),
                         ft.DataCell(ft.Text(item['Placa'], size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
                         ft.DataCell(ft.Text(item['Producto'], size=11)),
@@ -116,6 +120,7 @@ class UIComponents:
                                     color = (
                                         ft.Colors.GREEN_600 if estado in ["Transito entrando"]
                                         else ft.Colors.RED_700 if estado == "En inspeccion"
+                                        else ft.Colors.YELLOW_900 if estado == "Autorizado"
                                         else ft.Colors.BLACK87 if estado in ["En proceso", "Autorizado"]
                                         else ft.Colors.WHITE
                                     ),
@@ -129,7 +134,8 @@ class UIComponents:
                             )
                         ),
                         # Botón de edición mejorado
-                        ft.DataCell(edit_button)
+                        ft.DataCell(ft.Text(item['Manifiesto'], size=11)),
+                        ft.DataCell(edit_button),
                     ]
                 )
             )
@@ -251,7 +257,7 @@ class UIComponents:
                         on_click=notification_click_handler,  # Agregar el manejador de eventos
                         tooltip="Abrir documentación"  # Tooltip informativo
                     ),
-                    ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.GREY_600),
+                    #ft.IconButton(icon=ft.Icons.ACCOUNT_CIRCLE, icon_color=ft.Colors.GREY_600),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             ),

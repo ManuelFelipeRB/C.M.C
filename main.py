@@ -25,7 +25,6 @@ class ControlCargaApp:
         self.page = page
         self.setup_page()
     
-
         # Colores personalizados
         self.color_principal = "#8c4191"  # Morado
         self.color_secundario = "#f1ffff"  # Azul claro

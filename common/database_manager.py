@@ -19,8 +19,12 @@ class DatabaseManager:
         cursor = conn.cursor()
         try:
             cursor.execute("""
-                SELECT ID, Cedula, NombreConductor, Placa, Remolque, 
-                GrupoProducto, Producto, Proceso, Cliente, Origen, Destino, Estado 
+                SELECT ID, Consecutivo, FechaEnturne, HoraEnturne, Cedula, NombreConductor, 
+                Placa, Remolque, GrupoProducto, Producto, Proceso, Cliente, Origen, Destino, 
+                Estado, Transportador, Folio, FechaBasculaEntrada, HoraBasculaEntrada,
+                FechaBasculaSalida, HoraBasculaSalida, Manifiesto, GUT, Ejes, BasculaOUT,
+                BasculaIN, PesoEntrada, Tara, PesoSalida, FechaEnvio, HoraEnvio, 
+                Precalentamiento, DobleCiclo, TipoEmbalaje
                 FROM BDEnturne 
                 WHERE EstadoRegistro = 'Activo' AND Folio = ? 
                 ORDER BY Consecutivo""", 
@@ -42,8 +46,12 @@ class DatabaseManager:
         cursor = conn.cursor()
         try:
             cursor.execute("""
-                SELECT ID, Cedula, NombreConductor, Placa, Remolque,
-                GrupoProducto, Producto, Proceso, Cliente, Origen, Destino, Estado 
+                SELECT ID, Consecutivo, FechaEnturne, HoraEnturne, Cedula, NombreConductor, 
+                Placa, Remolque, GrupoProducto, Producto, Proceso, Cliente, Origen, Destino, 
+                Estado, Transportador, Folio, FechaBasculaEntrada, HoraBasculaEntrada,
+                FechaBasculaSalida, HoraBasculaSalida, Manifiesto, GUT, Ejes, BasculaOUT,
+                BasculaIN, PesoEntrada, Tara, PesoSalida, FechaEnvio, HoraEnvio, 
+                Precalentamiento, DobleCiclo, TipoEmbalaje
                 FROM BDEnturne 
                 WHERE ID = ?""", 
                 (vehicle_id,))
@@ -51,7 +59,10 @@ class DatabaseManager:
             if row:
                 return {
                     "ID": row.ID,
-                    "Cedula": (row.Cedula),
+                    "Consecutivo": row.Consecutivo if hasattr(row, 'Consecutivo') else None,
+                    "FechaEnturne": row.FechaEnturne if hasattr(row, 'FechaEnturne') else None,
+                    "HoraEnturne": row.HoraEnturne if hasattr(row, 'HoraEnturne') else None,
+                    "Cedula": row.Cedula,
                     "NombreConductor": row.NombreConductor,
                     "Placa": row.Placa,
                     "Remolque": row.Remolque,
@@ -59,9 +70,29 @@ class DatabaseManager:
                     "Producto": row.Producto,
                     "Proceso": row.Proceso,
                     "Cliente": row.Cliente,
-                    "Origen": row.Origen,
-                    "Destino": row.Destino,
+                    "Origen": row.Origen if hasattr(row, 'Origen') else None,
+                    "Destino": row.Destino if hasattr(row, 'Destino') else None,
                     "Estado": row.Estado,
+                    "Transportador": row.Transportador if hasattr(row, 'Transportador') else None,
+                    "Folio": row.Folio if hasattr(row, 'Folio') else None,
+                    "FechaBasculaEntrada": row.FechaBasculaEntrada if hasattr(row, 'FechaBasculaEntrada') else None,
+                    "HoraBasculaEntrada": row.HoraBasculaEntrada if hasattr(row, 'HoraBasculaEntrada') else None,
+                    "FechaBasculaSalida": row.FechaBasculaSalida if hasattr(row, 'FechaBasculaSalida') else None,
+                    "HoraBasculaSalida": row.HoraBasculaSalida if hasattr(row, 'HoraBasculaSalida') else None,
+                    "Manifiesto": row.Manifiesto if hasattr(row, 'Manifiesto') else None,
+                    "GUT": row.GUT if hasattr(row, 'GUT') else None,
+                    "Ejes": row.Ejes if hasattr(row, 'Ejes') else None,
+                    "BasculaOUT": row.BasculaOUT if hasattr(row, 'BasculaOUT') else None,
+                    "BasculaIN": row.BasculaIN if hasattr(row, 'BasculaIN') else None,
+                    "PesoEntrada": row.PesoEntrada if hasattr(row, 'PesoEntrada') else None,
+                    "Tara": row.Tara if hasattr(row, 'Tara') else None,
+                    "PesoSalida": row.PesoSalida if hasattr(row, 'PesoSalida') else None,
+                    "FechaEnvio": row.FechaEnvio if hasattr(row, 'FechaEnvio') else None,
+                    "HoraEnvio": row.HoraEnvio if hasattr(row, 'HoraEnvio') else None,
+                    "Precalentamiento": row.Precalentamiento if hasattr(row, 'Precalentamiento') else None,
+                    "DobleCiclo": row.DobleCiclo if hasattr(row, 'DobleCiclo') else None,
+                    "TipoEmbalaje": row.TipoEmbalaje if hasattr(row, 'TipoEmbalaje') else None
+                    
                 }
             return None
         except pyodbc.Error as e:
@@ -80,7 +111,7 @@ class DatabaseManager:
         try:
             # Convertir cédula a float para la base de datos
             cedula_value = None
-            cedula_str = vehicle_data["Cedula"]
+            cedula_str = vehicle_data.get("Cedula")
             
             # Verificar el tipo de dato antes de aplicar strip()
             if cedula_str is not None:
@@ -101,6 +132,11 @@ class DatabaseManager:
                     except ValueError:
                         cedula_value = str(cedula_str)
             
+            # Debug: Imprimir los valores para depuración
+            print("Datos del vehículo a actualizar:", vehicle_data)
+            
+            # Vamos a retroceder a los campos básicos que sabemos que funcionan
+            # Esta versión se centra solo en los campos que se ven en los datos actualizados
             cursor.execute(
                 """UPDATE BDEnturne 
                 SET Cedula = ?, 
@@ -113,26 +149,69 @@ class DatabaseManager:
                     Cliente = ?,
                     Origen = ?,
                     Destino = ?,
-                    Estado = ?
+                    Estado = ?,
+                    Manifiesto = ?,
+                    TipoEmbalaje = ?
                 WHERE ID = ?""",
-                (cedula_value,
-                vehicle_data["NombreConductor"],
-                vehicle_data["Placa"],
-                vehicle_data["Remolque"],
-                vehicle_data["GrupoProducto"],
-                vehicle_data["Producto"],
-                vehicle_data["Proceso"],
-                vehicle_data["Cliente"],
-                vehicle_data["Origen"],
-                vehicle_data["Destino"],
-                vehicle_data["Estado"],
-                vehicle_data["ID"])
+                (
+                cedula_value,
+                vehicle_data.get("NombreConductor"),
+                vehicle_data.get("Placa"),
+                vehicle_data.get("Remolque"),
+                vehicle_data.get("GrupoProducto"),
+                vehicle_data.get("Producto"),
+                vehicle_data.get("Proceso"),
+                vehicle_data.get("Cliente"),
+                vehicle_data.get("Origen"),
+                vehicle_data.get("Destino"),
+                vehicle_data.get("Estado"),
+                vehicle_data.get("Manifiesto"),
+                vehicle_data.get("TipoEmbalaje"),
+                vehicle_data.get("ID")),
             )
             conn.commit()
             return True
         except pyodbc.Error as e:
             print(f"Error al actualizar vehículo: {e}")
             return False
+        finally:
+            cursor.close()
+            conn.close()
+            
+    def execute_query_with_condition(self, folio_actual):
+        """
+        Ejecuta una consulta similar a la de VBA con condiciones específicas.
+        
+        Args:
+            folio_actual: Valor equivalente a Hoja7.Range("C1").value en VBA
+        
+        Returns:
+            Lista de resultados de la consulta
+        """
+        conn = self.connect()
+        if not conn:
+            return []
+        
+        cursor = conn.cursor()
+        try:
+            query = """
+                SELECT ID, Consecutivo, FechaEnturne, HoraEnturne, Cedula, NombreConductor, 
+                Placa, Remolque, Estado, Proceso, Producto, Cliente, Transportador, 
+                GrupoProducto, Folio, FechaBasculaEntrada, HoraBasculaEntrada, 
+                FechaBasculaSalida, HoraBasculaSalida, Manifiesto, GUT, Ejes, BasculaOUT,
+                BasculaIN, PesoEntrada, Tara, PesoSalida, FechaEnvio, HoraEnvio, 
+                Precalentamiento, DobleCiclo, EjecutadoRNDC, Origen, Destino, TipoEmbalaje
+                FROM BDEnturne 
+                WHERE ((FechaBasculaSalida = 0) AND (EstadoRegistro <> 'Eliminado') AND (Folio <= ?)) 
+                OR ((Folio = ?) AND (Estado = 'Finalizado'))
+                ORDER BY Consecutivo
+            """
+            cursor.execute(query, (folio_actual, folio_actual))
+            rows = cursor.fetchall()
+            return rows
+        except pyodbc.Error as e:
+            print(f"Error al ejecutar la consulta: {e}")
+            return []
         finally:
             cursor.close()
             conn.close()

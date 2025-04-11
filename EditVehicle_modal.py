@@ -11,7 +11,10 @@ class EditVehicleModal:
             "En inspeccion", "Revision documental", "Transito entrando", 
             "Procesado", "Ingresó", "En proceso", "Finalizado"
         ]
-        
+        self.tipo_vehiculo_opciones = [
+            "Camión", "Furgón", "TractoCamión", "Camabaja", 
+            "Volqueta", "Grua", "Planchon"
+        ]
         # Campos de formulario
 
         self.cedula_conductor = self.crear_textfield("Numero Cédula")
@@ -21,8 +24,6 @@ class EditVehicleModal:
         self.placa = self.crear_textfield("Placa")
         
         self.remolque = self.crear_textfield("Remolque")
-
-        self.tipo_vehiculo = self.crear_textfield("Grup")
 
         self.grupo_producto = self.crear_textfield("Grupo producto")
 
@@ -35,6 +36,20 @@ class EditVehicleModal:
         self.origen = self.crear_textfield("Origen")
 
         self.destino = self.crear_textfield("Destino")
+
+        self.manifiesto = self.crear_textfield("Manifiesto")
+
+        self.gut = self.crear_textfield("GUT")
+
+        self.tipo_vehiculo = ft.Dropdown(
+            label="Tipo vehículo",
+            options=[ft.dropdown.Option(tipo_vehiculo) for tipo_vehiculo in self.tipo_vehiculo_opciones],
+            border_color=ft.Colors.GREY_400,
+            border_radius=8,
+            enable_filter=True,
+            filled=True,
+            fill_color=ft.Colors.WHITE54   
+        )
         
         self.estado = ft.Dropdown(
             label="Estado",
@@ -87,6 +102,8 @@ class EditVehicleModal:
             self.producto.value = vehicle_data["Producto"]
             self.proceso.value = vehicle_data["Proceso"]
             self.cliente.value = vehicle_data["Cliente"]
+            self.tipo_vehiculo.value = vehicle_data["TipoEmbalaje"]
+            self.manifiesto.value = vehicle_data["Manifiesto"]
             self.origen.value = vehicle_data["Origen"]
             self.destino.value = vehicle_data["Destino"]
             self.estado.value = vehicle_data["Estado"]
@@ -103,7 +120,9 @@ class EditVehicleModal:
             self.producto.value = ""
             self.proceso.value = ""
             self.cliente.value = ""
+            self.manifiesto.value = ""
             self.estado.value = None
+            self.tipo_vehiculo.value = None
             
             # Cargar los datos del vehículo
             self.load_vehicle_data(vehicle_id)
@@ -142,7 +161,14 @@ class EditVehicleModal:
                                 self.destino,
                             ],
                         ),
-                        self.estado,
+                        ft.Row(
+                            [
+                                self.estado,
+                                self.tipo_vehiculo,
+                                self.manifiesto,
+                            ],
+                        ),
+                        
                         ft.Row(
                             [
                                 self.cancelar_btn,
@@ -195,9 +221,11 @@ class EditVehicleModal:
             "Producto": self.producto.value,
             "Proceso": self.proceso.value,
             "Cliente": self.cliente.value,
+            "Manifiesto": self.manifiesto.value,
             "Origen": self.origen.value,
             "Destino": self.destino.value,
-            "Estado": self.estado.value
+            "Estado": self.estado.value,
+            "TipoEmbalaje": self.tipo_vehiculo.value,
         }
         
         # Intentar guardar los cambios
@@ -270,10 +298,11 @@ class VehicleData:
                 "Producto": row.Producto,
                 "Proceso": row.Proceso,
                 "Cliente": row.Cliente,
-                "Origen": row.Origen,
-                "Destino": row.Destino,
+                "Origen": getattr(row, 'Origen', None),
+                "Destino": getattr(row, 'Destino', None),
                 "Estado": row.Estado,
-               
+                "Manifiesto": getattr(row, 'Manifiesto', None),
+                "TipoEmbalaje": getattr(row, 'TipoEmbalaje', None),
             }
             self.data.append(item)
             
@@ -347,8 +376,10 @@ class VehicleData:
                 safe_search(item['Proceso']) or
                 safe_search(item['Cliente']) or
                 safe_search(item['Origen']) or
+                safe_search(item['Manifiesto']) or
                 safe_search(item['Destino']) or
-                safe_search(item['Estado'])):
+                safe_search(item['Estado'])or
+                safe_search(item['TipoEmbalaje'])):
                 result.append(item)
         
         return result

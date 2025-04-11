@@ -89,7 +89,7 @@ class EnturneView:
             width=200,
             border_color=ft.Colors.GREY_400,
             border_radius=8,
-            #height=50
+            
         )
         
         # Botones de acción
@@ -148,7 +148,6 @@ class EnturneView:
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=self.color_principal
-                            
                         ),
 
                     ft.Container(
@@ -162,6 +161,7 @@ class EnturneView:
                                         self.nit_transportadora,
                                         self.trasportadora,
                                     ],
+                                    expand=True,
                                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                 ),
                                 ft.Row(

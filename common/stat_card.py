@@ -5,7 +5,7 @@ class StatCard:
         self.page = page
         self.icon = icon
         self.title = title
-        self.color = color
+        self.color = "#9C5BAC"
         self.on_click_handler = on_click_handler
         self.is_active = False
         self.is_hovered = False
@@ -29,8 +29,9 @@ class StatCard:
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     expand=True,
                 ),
-                padding=ft.padding.only(left=20, right=20, bottom=5, top=5),
+                padding=ft.padding.only(left=20, right=20, bottom=10, top=5),
                 border_radius=10,
+                expand=True,
                 on_hover=self.on_hover,
                 on_click=self.on_click,
                 opacity=1,

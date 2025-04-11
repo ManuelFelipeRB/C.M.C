@@ -24,7 +24,8 @@ class CMCView:
                         ],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     ),
-                    padding=ft.padding.only(left=30, right=30, bottom=0, top=0),
+                    padding=ft.padding.only(left=30, right=30, bottom=10, top=0),
+                    expand=True,
                 ),
                 ft.Container(
                     content=ft.Column(
