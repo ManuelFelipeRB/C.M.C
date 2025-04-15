@@ -6,6 +6,7 @@ import sys
 
 from datetime import datetime
 from common.database_manager import DatabaseManager
+from views.serial_config_modal import SerialConfigModal
 from EditVehicle_modal import EditVehicleModal
 from EditVehicle_modal import VehicleData
 

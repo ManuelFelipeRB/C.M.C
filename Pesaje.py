@@ -1,7 +1,7 @@
 import flet as ft
 from datetime import datetime
 from DatabaseConnections import DatabaseManager
-from SerialComunications import SerialPortManager
+from common.serial_manager import SerialPortManager
 
 class WeightTrackingApp:
     def __init__(self, page: ft.Page):
