@@ -37,7 +37,7 @@ class EditVehicleModal:
 
         self.destino = self.crear_textfield("Destino")
 
-        self.manifiesto = self.crear_textfield("Manifiesto")
+        self.ejes = self.crear_textfield("Ejes")
 
         self.gut = self.crear_textfield("GUT")
 
@@ -103,7 +103,7 @@ class EditVehicleModal:
             self.proceso.value = vehicle_data["Proceso"]
             self.cliente.value = vehicle_data["Cliente"]
             self.tipo_vehiculo.value = vehicle_data["TipoEmbalaje"]
-            self.manifiesto.value = vehicle_data["Manifiesto"]
+            self.ejes.value = vehicle_data["Ejes"]
             self.origen.value = vehicle_data["Origen"]
             self.destino.value = vehicle_data["Destino"]
             self.estado.value = vehicle_data["Estado"]
@@ -120,7 +120,7 @@ class EditVehicleModal:
             self.producto.value = ""
             self.proceso.value = ""
             self.cliente.value = ""
-            self.manifiesto.value = ""
+            self.ejes.value = ""
             self.estado.value = None
             self.tipo_vehiculo.value = None
             
@@ -165,7 +165,7 @@ class EditVehicleModal:
                             [
                                 self.estado,
                                 self.tipo_vehiculo,
-                                self.manifiesto,
+                                self.ejes,
                             ],
                         ),
                         
@@ -221,7 +221,7 @@ class EditVehicleModal:
             "Producto": self.producto.value,
             "Proceso": self.proceso.value,
             "Cliente": self.cliente.value,
-            "Manifiesto": self.manifiesto.value,
+            "Ejes": self.ejes.value,
             "Origen": self.origen.value,
             "Destino": self.destino.value,
             "Estado": self.estado.value,
@@ -301,7 +301,7 @@ class VehicleData:
                 "Origen": getattr(row, 'Origen', None),
                 "Destino": getattr(row, 'Destino', None),
                 "Estado": row.Estado,
-                "Manifiesto": getattr(row, 'Manifiesto', None),
+                "Ejes": getattr(row, 'Ejes', None),
                 "TipoEmbalaje": getattr(row, 'TipoEmbalaje', None),
             }
             self.data.append(item)
@@ -376,7 +376,7 @@ class VehicleData:
                 safe_search(item['Proceso']) or
                 safe_search(item['Cliente']) or
                 safe_search(item['Origen']) or
-                safe_search(item['Manifiesto']) or
+                safe_search(item['Ejes']) or
                 safe_search(item['Destino']) or
                 safe_search(item['Estado'])or
                 safe_search(item['TipoEmbalaje'])):

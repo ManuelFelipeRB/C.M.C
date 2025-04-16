@@ -56,10 +56,11 @@ class UIComponents:
                 ft.DataColumn(ft.Text("CONDUCTOR", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("PLACA", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("PRODUCTO", size=13, color=self.color_principal)),
+                ft.DataColumn(ft.Text("EJES", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("PROCESO", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("CLIENTE", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("ESTADO", size=13, color=self.color_principal)),
-                ft.DataColumn(ft.Text("MANIFIESTO", size=13, color=self.color_principal)),  # Cambiado a "MANEJAR"
+                
                 ft.DataColumn(ft.Text("", size=13 )),
                 
             ],
@@ -94,11 +95,10 @@ class UIComponents:
             # Obtener el ID del vehículo
             vehicle_id = item['ID']
             
-            # Crear un botón más sutil y elegante
             edit_button = ft.IconButton(
                 icon=ft.Icons.EDIT_NOTE,  # Icono de edición de notas, más sutil
                 icon_color=self.color_principal,
-                tooltip="Editar detalles",
+                tooltip="Editar vehículo.",
                 icon_size=20,  # Tamaño más pequeño
                 on_click=lambda e, id=vehicle_id: self.on_edit_click(id) if self.on_edit_click else None
             )
@@ -111,6 +111,7 @@ class UIComponents:
                         ft.DataCell(ft.Text(item['NombreConductor'], size=11)),
                         ft.DataCell(ft.Text(item['Placa'], size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
                         ft.DataCell(ft.Text(item['Producto'], size=11)),
+                        ft.DataCell(ft.Text(item['Ejes'], size=11)),
                         ft.DataCell(ft.Text(item['Proceso'], size=11)),
                         ft.DataCell(ft.Text(item['Cliente'], size=11)),
                         ft.DataCell(
@@ -133,8 +134,6 @@ class UIComponents:
                                 alignment=ft.alignment.center
                             )
                         ),
-                        # Botón de edición mejorado
-                        ft.DataCell(ft.Text(item['Manifiesto'], size=11)),
                         ft.DataCell(edit_button),
                     ]
                 )

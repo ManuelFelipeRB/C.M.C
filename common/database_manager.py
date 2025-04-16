@@ -1,4 +1,5 @@
 import pyodbc
+import flet as ft
 
 class DatabaseManager:
     def __init__(self):
@@ -150,7 +151,7 @@ class DatabaseManager:
                     Origen = ?,
                     Destino = ?,
                     Estado = ?,
-                    Manifiesto = ?,
+                    Ejes = ?,
                     TipoEmbalaje = ?
                 WHERE ID = ?""",
                 (
@@ -165,7 +166,7 @@ class DatabaseManager:
                 vehicle_data.get("Origen"),
                 vehicle_data.get("Destino"),
                 vehicle_data.get("Estado"),
-                vehicle_data.get("Manifiesto"),
+                vehicle_data.get("Ejes"),
                 vehicle_data.get("TipoEmbalaje"),
                 vehicle_data.get("ID")),
             )
@@ -215,3 +216,65 @@ class DatabaseManager:
         finally:
             cursor.close()
             conn.close()
+
+
+class PesajesManager:    
+    
+    def __init__(self):
+        self.conn_str = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=\\ttrafejt2k02\Shared\Safety Program\CEV 2021\BaseDatos\DBIsotanques1\Isotanques.mdb'
+
+    def connect(self):
+        try:
+            return pyodbc.connect(self.conn_str)
+        except pyodbc.Error as e:
+            print(f"Error de conexión a la base de datos: {e}")
+            return None
+
+    def get_pesajes_by_folio(self, folio):
+        conn = self.connect()
+        if not conn:
+            return []
+
+        cursor = conn.cursor()
+        try:
+            query = """
+                SELECT id, folio, consecutivo, contenedor, producto, fechahorainicio, 
+                       pesoinicio, basculainicio, usuarioinicio, fechahorafinal, 
+                       pesofinal, basculafinal, usuariofinal, tara, neto, referencia, 
+                       clase, terminaltractor
+                FROM Pesajes1
+                WHERE folio = ?
+                ORDER BY consecutivo
+            """
+            cursor.execute(query, (folio,))
+            rows = cursor.fetchall()
+            columns = [column[0] for column in cursor.description]
+
+            result = []
+            for row in rows:
+                result.append({col: getattr(row, col) for col in columns})
+
+            return result
+        except pyodbc.Error as e:
+            print(f"Error al consultar datos en Pesajes1: {e}")
+            return []
+        finally:
+            cursor.close()
+            conn.close()
+
+    def build_table(self, data):
+        if not data:
+            return ft.Text("No hay datos disponibles", color="red")
+
+        # Crear encabezados
+        columns = [ft.DataColumn(ft.Text(key)) for key in data[0].keys()]
+
+        # Crear filas
+        rows = []
+        for item in data:
+            row = ft.DataRow(
+                cells=[ft.DataCell(ft.Text(str(item[key]) if item[key] is not None else "")) for key in item]
+            )
+            rows.append(row)
+
+        return ft.DataTable(columns=columns, rows=rows)

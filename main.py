@@ -80,7 +80,16 @@ class ControlCargaApp:
 
 
         self.enturne_view = EnturneView(page, self.color_principal)
-        self.bascula_view = BasculaView(page, self.color_principal, self.color_secundario)
+        # En la función __init__ o donde inicializas tus vistas
+        self.bascula_view = BasculaView(
+            page=self.page, 
+            color_principal=self.color_principal, 
+            color_secundario=self.color_secundario,
+            pagination=self.pagination,           # Sistema de paginación
+            vehicle_data=self.vehicle_data,       # Datos de vehículos
+            update_data_callback=self.update_data, # Callback para actualizar datos
+            stat_cards=self.stat_cards            # Tarjetas estadísticas
+        )
         
         # Obtener referencias a las vistas
         self.view_cmc = self.cmc_view.get_view()
@@ -106,14 +115,14 @@ class ControlCargaApp:
             'total': StatCard(
                 self.page,
                 ft.Icons.VISIBILITY_OUTLINED,
-                "Total Enturnados",
+                "Total Veh",
                 self.color_principal,
                 lambda e: self.handle_card_click('todos')
             ),
             'entrando': StatCard(
                 self.page,
                 ft.Icons.DIRECTIONS_BUS_OUTLINED,
-                "Transito Entrando",
+                "Entrando",
                 self.color_principal,
                 lambda e: self.handle_card_click('entrando')
             ),
@@ -134,7 +143,7 @@ class ControlCargaApp:
             'pendiente': StatCard(
                 self.page,
                 ft.Icons.WARNING_AMBER_OUTLINED,
-                "Pendientes",
+                "Pendiente",
                 self.color_principal,
                 lambda e: self.handle_card_click('pendiente')
             )
@@ -306,7 +315,7 @@ class ControlCargaApp:
         self.page.update()
     
     def update_data_table(self):
-        # Obtener datos de la página actual
+        """Obtener datos de la página actual"""
         current_page_data = self.pagination.get_current_page_data()
         
         # Calcular el índice de inicio para la numeración basado en la página actual
@@ -316,7 +325,7 @@ class ControlCargaApp:
         self.ui_components.update_data_table(self.data_table, current_page_data, start_index)
         
     def update_stat_cards(self):
-        # Actualizar valores de las tarjetas estadísticas
+        """Actualizar valores de las tarjetas estadísticas"""
         totals = self.vehicle_data.totals
         self.stat_cards['total'].update_value(totals['total_pesajes'])
         self.stat_cards['entrando'].update_value(totals['total_entrando'])
@@ -325,7 +334,7 @@ class ControlCargaApp:
         self.stat_cards['pendiente'].update_value(totals['total_pendiente'])
     
     def update_card_states(self):
-        # Actualizar el estado visual de cada tarjeta según el filtro activo
+        """ Actualizar el estado visual de cada tarjeta según el filtro activo """""
         current_filter = self.filter_manager.current_filter
         for card_name, card in self.stat_cards.items():
             is_active = (

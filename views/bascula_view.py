@@ -2,16 +2,23 @@ import flet as ft
 import threading
 from datetime import datetime
 from common.serial_manager import SerialManager
-from views.serial_config_modal import SerialConfigModal
-from common.scale_protocols import ScaleProtocolParser, WeightRecord
-from common.weight_database import WeightDatabaseManager
+from common.ui_components import UIComponents
+
 
 class BasculaView:
-    def __init__(self, page, color_principal, color_secundario):
+    def __init__(self, page, color_principal, color_secundario, pagination=None, vehicle_data=None, update_data_callback=None, stat_cards=None):
         self.page = page
         self.color_principal = color_principal
         self.color_secundario = color_secundario
-        
+            
+    # Referencias a componentes externos
+        self.pagination = pagination
+        self.vehicle_data = vehicle_data
+        self.update_data_callback = update_data_callback
+        self.stat_cards = stat_cards or {}
+
+        self.ui_components = UIComponents(page, color_principal)
+
         # Inicializar el gestor de puerto serie
         self.serial_manager = SerialManager()
         
@@ -19,6 +26,7 @@ class BasculaView:
         self.available_ports = self.serial_manager.get_available_ports()
         self.current_weight = "0.00"
         
+
         # Lista para mantener un historial de pesos
         self.weight_history = []
         self.MAX_HISTORY_SIZE = 10  # Máximo número de pesos a mantener
@@ -44,6 +52,7 @@ class BasculaView:
             width=150,
             height=50,
             border_color=ft.Colors.GREY_400,
+            bgcolor=ft.Colors.WHITE70,
             border_radius=8
         )
         self.ejes_field = ft.Dropdown(
@@ -53,6 +62,7 @@ class BasculaView:
             border_radius=8,
             enable_filter=True,
             filled=True,
+            bgcolor=ft.Colors.WHITE70,
             fill_color=ft.Colors.WHITE54   
         )
 
@@ -62,6 +72,7 @@ class BasculaView:
             expand=True,
             height=50,
             border_color=ft.Colors.GREY_400,
+            bgcolor=ft.Colors.WHITE70,
             border_radius=8
         )
         self.conductor_field = ft.TextField(
@@ -70,6 +81,7 @@ class BasculaView:
             expand=True,
             height=50,
             border_color=ft.Colors.GREY_400,
+            bgcolor=ft.Colors.WHITE70,
             border_radius=8
         )
         self.date_field = ft.TextField(
@@ -79,6 +91,7 @@ class BasculaView:
             width=160,
             height=50,
             border_color=ft.Colors.GREY_400,
+            bgcolor=ft.Colors.WHITE70,
             border_radius=8
         )
         
@@ -91,7 +104,7 @@ class BasculaView:
         
         # Lista para mostrar historial de pesos
         self.weight_history_list = ft.ListView(
-            height=150,
+            height=125,
             spacing=2,
             width=250,
             divider_thickness=1,
@@ -100,7 +113,7 @@ class BasculaView:
         
         # Lista para mostrar registro de eventos
         self.event_log_list = ft.ListView(
-            height=150,
+            height=125,
             spacing=2,
             divider_thickness=1,
             auto_scroll=True
@@ -157,14 +170,16 @@ class BasculaView:
             border_radius=8,
             enable_filter=True,
             filled=True,
+            bgcolor=ft.Colors.WHITE70,
             fill_color=ft.Colors.WHITE54   
         )
 
         self.overlay_imprimir = ft.Container(
             content=ft.Container(
                 content=ft.Column([
-                    ft.Text("Mensaje", size=20, weight="bold", color=self.color_principal),
+                    ft.Text("Mensaje", size=20, weight="bold", color=self.color_principal,),
                     ft.Text("Imprimiendo..."),
+                    
                     ft.Row([
                         ft.TextButton("OK", on_click=self.close_overlay_imprimir)
                     ], alignment=ft.MainAxisAlignment.END)
@@ -185,10 +200,210 @@ class BasculaView:
             alignment=ft.alignment.center,
         )
         # Crear la vista
-        self.view = self.create_view()
+        self.view = self.create_tab_view()
     
+    def updatetab_data_table1(self):
+        if not self.pagination or not self.vehicle_data:
+            return
+            
+        # Obtener todos los datos actuales
+        all_data = self.vehicle_data.data
+        
+        # Filtrar por estados específicos
+        estados_a_mostrar = ["En proceso", "Finalizado", "Transito entrando", "Autorizado"]
+        filtered_data = [item for item in all_data if item['Estado'] in estados_a_mostrar]
+        
+        # Si no hay datos después del filtro, mostrar mensaje
+        if not filtered_data:
+            empty_table = ft.DataTable(
+                columns=[ft.DataColumn(ft.Text("Sin datos"))],
+                rows=[ft.DataRow(cells=[ft.DataCell(ft.Text("No hay datos con los estados seleccionados"))])],
+            )
+            self._update_table_in_tab(empty_table)
+            return
+        
+        # Calcular índices para la numeración
+        start_index = 1
+            
+        # Crear una tabla personalizada (sin las 2 últimas columnas)
+        custom_table = ft.DataTable(
+            columns=[
+                ft.DataColumn(ft.Text("#", size=13, weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("CONDUCTOR", size=13)),
+                ft.DataColumn(ft.Text("PLACA", size=13)),
+                ft.DataColumn(ft.Text("PRODUCTO", size=13)),
+                ft.DataColumn(ft.Text("EJES", size=13)),
+                ft.DataColumn(ft.Text("PROCESO", size=13)),
+                ft.DataColumn(ft.Text("CLIENTE", size=13)),
+                ft.DataColumn(ft.Text('ESTADO', size=11)),
+                # Omitimos  EDIT
+            ],
+            rows=[],
+            border=ft.border.all(1, ft.Colors.GREY_300),
+            border_radius=6,
+            vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+            horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+            sort_column_index=0,
+            column_spacing=8,
+            heading_row_height=30,
+            data_row_min_height=25,
+            data_row_max_height=35,
+        )
+        
+        for i, item in enumerate(filtered_data):
+            row_number = start_index + i
+            estado = item['Estado']
+            estado_color = self.ui_components.get_estado_color(estado)
+            custom_table.rows.append(
+                ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(str(row_number), size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
+                        ft.DataCell(ft.Text(item['NombreConductor'], size=11)),
+                        ft.DataCell(ft.Text(item['Placa'], size=12, weight=ft.FontWeight.BOLD)),
+                        ft.DataCell(ft.Text(item['Producto'], size=11)),
+                        ft.DataCell(ft.Text(item['Ejes'], size=11)),
+                        ft.DataCell(ft.Text(item['Proceso'], size=11)),
+                        ft.DataCell(ft.Text(item['Cliente'], size=11)),
+                        ft.DataCell(
+                            ft.Container(
+                                content=ft.Text(estado,
+                                    weight=ft.FontWeight.BOLD,
+                                    color = (
+                                        ft.Colors.GREEN_600 if estado in ["Transito entrando"]
+                                        else ft.Colors.RED_700 if estado == "En inspeccion"
+                                        else ft.Colors.YELLOW_900 if estado == "Autorizado"
+                                        else ft.Colors.BLACK87 if estado in ["En proceso", "Autorizado"]
+                                        else ft.Colors.WHITE
+                                    ),
+                                size=11),
+                                bgcolor=estado_color,
+                                border_radius=6,
+                                padding=1,
+                                height=25,
+                                width=120,
+                                alignment=ft.alignment.center
+                            )
+                        ),
+                    ]
+                )
+            )
+        
+        # Reemplazar la tabla actual en el contenido de la pestaña
+        tab_content = self.tabs_content[0]
+        container = tab_content.content.controls[1]  # El Container que contiene ListView
+        container.content.controls = [custom_table]
+        
+        self.page.update()
+
+#################################################################
 
 
+    def update_data_table2(self):
+        if not hasattr(self, 'current_folio'):
+            print("Error: No current_folio attribute found")
+            return
+            
+        # Obtener los datos de pesajes usando PesajesManager
+        pesajes_manager = PesajesManager()
+        all_data = pesajes_manager.get_pesajes_by_folio(self.current_folio)
+        
+        # Filtrar por clases específicas
+        clase_a_mostrar = ["22K2", "ISOTANQUE"]
+        filtered_data = [item for item in all_data if item.get('clase') in clase_a_mostrar]
+        
+        # Crear tabla (vacía o con datos)
+        if not filtered_data:
+            custom_table = ft.DataTable(
+                columns=[ft.DataColumn(ft.Text("Sin datos"))],
+                rows=[ft.DataRow(cells=[ft.DataCell(ft.Text("No hay datos con las clases seleccionadas"))])],
+                border=ft.border.all(1, ft.Colors.GREY_300),
+                border_radius=6,
+            )
+        else:
+            # Crear una tabla con los datos filtrados
+            custom_table = ft.DataTable(
+                columns=[
+                    ft.DataColumn(ft.Text("#", size=13, weight=ft.FontWeight.BOLD)),
+                    ft.DataColumn(ft.Text("CONTENEDOR", size=13)),
+                    ft.DataColumn(ft.Text("PRODUCTO", size=13)),
+                    ft.DataColumn(ft.Text("PESO INICIO", size=13)),
+                    ft.DataColumn(ft.Text("TARA", size=13)),
+                    ft.DataColumn(ft.Text("PESO FINAL", size=13)),
+                    ft.DataColumn(ft.Text('NETO', size=11)),
+                    ft.DataColumn(ft.Text("EQUIPO", size=13)),
+                ],
+                border=ft.border.all(1, ft.Colors.GREY_300),
+                border_radius=6,
+                vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+                horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+                sort_column_index=0,
+                column_spacing=8,
+                heading_row_height=30,
+                data_row_min_height=25,
+                data_row_max_height=35,
+            )
+            
+            # Definimos un color principal para usar en la numeración (o usamos el existente)
+            color_principal = getattr(self, 'color_principal', ft.colors.BLUE)
+            
+            for i, item in enumerate(filtered_data):
+                row_number = i + 1
+                custom_table.rows.append(
+                    ft.DataRow(
+                        cells=[
+                            ft.DataCell(ft.Text(str(row_number), size=12, weight=ft.FontWeight.BOLD, color=color_principal)),
+                            ft.DataCell(ft.Text(item.get('contenedor', ''), size=11)),
+                            ft.DataCell(ft.Text(item.get('producto', ''), size=12, weight=ft.FontWeight.BOLD)),
+                            ft.DataCell(ft.Text(str(item.get('pesoinicio', '')), size=11)),
+                            ft.DataCell(ft.Text(str(item.get('tara', '')), size=11)),
+                            ft.DataCell(ft.Text(str(item.get('pesofinal', '')), size=11)),
+                            ft.DataCell(ft.Text(str(item.get('neto', '')), size=11)),
+                            ft.DataCell(ft.Text(item.get('terminaltractor', ''), size=11)),
+                        ]
+                    )
+                )
+        
+        # Actualizar la tabla en tab2_content
+        # Basándonos en la estructura proporcionada
+        if hasattr(self, 'tabs_content') and len(self.tabs_content) > 1:
+            tab2_content = self.tabs_content[1]
+            
+            # Acceder a ListView en el segundo Container dentro de la columna
+            if (hasattr(tab2_content, 'content') and 
+                isinstance(tab2_content.content, ft.Column) and 
+                len(tab2_content.content.controls) > 1):
+                
+                container = tab2_content.content.controls[1]  # Segundo elemento (índice 1) en la columna
+                
+                if (isinstance(container, ft.Container) and 
+                    hasattr(container, 'content') and 
+                    isinstance(container.content, ft.ListView)):
+                    
+                    # Actualizamos los controles de ListView con la nueva tabla
+                    container.content.controls = [custom_table]
+                    
+                    # Actualizamos la página
+                    self.page.update()
+                    print("Tabla actualizada con éxito")
+                else:
+                    print("Error: La estructura del contenedor no es la esperada")
+            else:
+                print("Error: La estructura de tab2_content no es la esperada")
+        else:
+            print("Error: No se encontró tabs_content o no tiene suficientes elementos")
+
+    def updatetab_data_table2(self):
+        """
+        Método que sirve como callback para el botón de actualización
+        Debe establecer el folio actual y luego llamar a update_data_table2
+        """
+        # Asegurarse de que self.current_folio esté establecido
+        if not hasattr(self, 'current_folio') and hasattr(self, 'get_current_folio'):
+            self.current_folio = self.get_current_folio()
+        
+        # Llamar al método de actualización
+        self.update_data_table2()
+        
     def page_resize(self, e):
         if hasattr(self, 'overlay_imprimir') and self.overlay_imprimir in self.page.overlay:
             self.overlay_imprimir.width = self.page.width
@@ -254,66 +469,128 @@ class BasculaView:
             border_radius=8
         )
     
-    def create_view(self):
-        # Creamos un método para manejar el cambio de pestañas
+    def create_tab_view(self):
+        # Definir el método para cambiar de pestaña
         def on_tab_change(e):
-            # Actualizamos el índice de la pestaña seleccionada
             self.tabs_container.content = self.tabs_content[e.control.selected_index]
+            
+            # Si cambiamos a la primera pestaña, actualizar la tabla
+            if e.control.selected_index == 0:
+                self.updatetab_data_table1()
+                
             self.page.update()
         
-        # Definimos el contenido de cada pestaña
+        # Crear tabla vacía inicialmente
+        initial_table = ft.DataTable(
+            columns=[ft.DataColumn(ft.Text("Presione actualizar..."))],
+            rows=[]
+        )
+        
+        # Definir el contenido de cada pestaña
         tab1_content = ft.Container(
             content=ft.Column([
-                ft.Text("Contenido de la Pestaña 1", size=16),
-                ft.TextField(label="Campo de prueba", width=300),
-                ft.ElevatedButton(text="Botón de prueba")
+                ft.Row(
+                    [
+                        ft.Text("Total Vehículos", size=15, weight=ft.FontWeight.BOLD, color=self.color_principal),
+                                    ft.ElevatedButton(
+                                        "Actualizar", 
+                                        on_click=lambda e: self.updatetab_data_table1(), 
+                                        icon=ft.Icons.REFRESH
+                                    ),
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                ),
+                ft.Container(
+                    content=ft.ListView(
+                        controls=[initial_table],  # Comienza con una tabla vacía
+                        expand=True,
+                        auto_scroll=True
+                    ),
+                    padding=ft.padding.only(left=0, right=0, bottom=0, top=0),
+                    bgcolor=ft.colors,
+                    border_radius=10,
+                    expand=True,
+                    height=300,
+                ),
+                # Añadir paginación
+                #self.pagination.get_controls() if self.pagination else ft.Text(""),
             ]),
             padding=10,
             bgcolor=ft.colors.WHITE,
             border_radius=5,
             border=ft.border.all(1, ft.Colors.GREY_300),
-            height=300,
             expand=True,
         )
         
         tab2_content = ft.Container(
             content=ft.Column([
-                ft.Text("Contenido de la Pestaña 2", size=16),
-                ft.Checkbox(label="Opción de prueba"),
-                ft.ElevatedButton(text="Otra acción")
+                ft.Row(
+                    [
+                        ft.Text("Total Vehículos", size=15, weight=ft.FontWeight.BOLD, color=self.color_principal),
+                                    ft.ElevatedButton(
+                                        "Actualizar", 
+                                        on_click=lambda e: self.updatetab_data_table2(), 
+                                        icon=ft.Icons.REFRESH
+                                    ),
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                ),
+                ft.Container(
+                    content=ft.ListView(
+                        controls=[initial_table],  # Comienza con una tabla vacía
+                        expand=True,
+                        auto_scroll=True
+                    ),
+                    padding=ft.padding.only(left=0, right=0, bottom=0, top=0),
+                    bgcolor=ft.colors,
+                    border_radius=10,
+                    expand=True,
+                    height=300,
+                ),
+
             ]),
             padding=10,
             bgcolor=ft.colors.WHITE,
             border_radius=5,
             border=ft.border.all(1, ft.Colors.GREY_300),
-            height=300,
             expand=True,
         )
         
         tab3_content = ft.Container(
             content=ft.Column([
-                ft.Text("Configuración", size=16),
-                ft.Dropdown(
-                    label="Opciones",
-                    options=[
-                        ft.dropdown.Option("Opción 1"),
-                        ft.dropdown.Option("Opción 2"),
-                        ft.dropdown.Option("Opción 3"),
+                ft.Row(
+                    [
+                        ft.Text("Total Vehículos", size=15, weight=ft.FontWeight.BOLD, color=self.color_principal),
+                                    ft.ElevatedButton(
+                                        "Actualizar", 
+                                        on_click=lambda e: self.updatetab_data_table1(), 
+                                        icon=ft.Icons.REFRESH
+                                    ),
                     ],
-                    width=300
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 ),
-                ft.ElevatedButton(text="Guardar")
+                ft.Container(
+                    content=ft.ListView(
+                        controls=[initial_table],  # Comienza con una tabla vacía
+                        expand=True,
+                        auto_scroll=True
+                    ),
+                    padding=ft.padding.only(left=0, right=0, bottom=0, top=0),
+                    bgcolor=ft.colors,
+                    border_radius=10,
+                    expand=True,
+                    height=300,
+                ),
+
             ]),
             padding=10,
             bgcolor=ft.colors.WHITE,
             border_radius=5,
             border=ft.border.all(1, ft.Colors.GREY_300),
-            height=300,
             expand=True,
         )
         
-        # Guardamos el contenido de las pestañas en una lista
-        self.tabs_content = [tab1_content, tab2_content, tab3_content]
+        self.tabs_content = [tab1_content, tab2_content, tab3_content] # Guardamos el contenido de las pestañas en una lista
         
         # Contenedor para el contenido de las pestañas (inicialmente muestra la primera pestaña)
         self.tabs_container = ft.Container(
@@ -321,14 +598,38 @@ class BasculaView:
             expand=True,
         )
         
-        # Definimos las pestañas
-        tabs = ft.Tabs(
+        tabs = ft.Tabs( # Primero define las pestañas
             selected_index=0,
             animation_duration=200,
             tabs=[
-                ft.Tab(text="Pestaña 1"),
-                ft.Tab(text="Pestaña 2", icon=ft.icons.SEARCH),
-                ft.Tab(text="Configuración", icon=ft.icons.SETTINGS),
+                ft.Tab(
+                    tab_content=ft.Text(
+                        "Enturnados",
+                        size=16,
+                        weight=ft.FontWeight.BOLD,
+                        color=self.color_principal,
+                    ),
+                    icon=ft.icons.BUS_ALERT_OUTLINED,
+                ),
+                ft.Tab(
+                    tab_content=ft.Text(
+                        "Containers",
+                        size=16,
+                        weight=ft.FontWeight.BOLD,
+                        color=self.color_principal,
+                    ),
+                    icon=ft.icons.DELIVERY_DINING,
+                ),
+                ft.Tab(
+                    tab_content=ft.Text(
+                        "Externos",
+                        size=16,
+                        #bgcolor=ft.Colors.BLACK12,
+                        weight=ft.FontWeight.BOLD,
+                        color=self.color_principal,
+                    ),
+                    icon=ft.icons.DELIVERY_DINING,
+                )
             ],
             on_change=on_tab_change,
         )
@@ -351,7 +652,6 @@ class BasculaView:
                                                             weight=ft.FontWeight.BOLD,
                                                             color=self.color_principal
                                                         ),
-                                                        
                                                     ],
                                                 ),
                                                 
@@ -369,16 +669,17 @@ class BasculaView:
                                                         self.cliente_field,
                                                     ],
                                                     expand=True,
+                                                    width=('inf'),
                                                 ),
                                             ],  
                                             alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                                            spacing=10,
+                                            spacing=5,
                                             expand=True,
                                             width=700,
                                         ),
-                                        border=ft.border.all(1,ft.Colors.GREY_100),
+                                        border=None,
                                         border_radius=8,
-                                        margin=ft.margin.only(left=0, right=10, bottom=0, top=0),
+                                        margin=ft.margin.only(left=0, right=0, bottom=0, top=0),
                                         padding=ft.padding.only(left=0, right=10, bottom=0, top=0),
                                     ),
                                 ],
@@ -401,9 +702,8 @@ class BasculaView:
                                                         content=self.stat_cards['total'].get_card(),
                                                         left=10,
                                                         right=15,
-                                                        top=20,
+                                                        top=10,
                                                     )
-                                                    
                                                 ],
                                                 width=500,
                                                 height=150
@@ -412,7 +712,6 @@ class BasculaView:
                                             width=500,
                                             height=150
                                         ),
-                                        
                                         ft.Row(
                                             [
                                                 self.cancelar_button,
@@ -422,17 +721,16 @@ class BasculaView:
                                             alignment=ft.MainAxisAlignment.SPACE_EVENLY
                                         ),
                                     ],
-                                    expand=True,
-                                    
+                                    expand=True,   
                                 ),
-                                margin=ft.margin.only(top=10),
-                                padding=ft.padding.only(right=15),
+                                margin=ft.margin.only(top=0),
+                                padding=ft.padding.only(right=5),
                                 width=500,
                                 expand=True,
                             ),
                         ],        
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                        spacing=10,
+                        spacing=5,
                     ),
                     # Formulario principal
                     ft.Container(
@@ -453,18 +751,18 @@ class BasculaView:
                                 # Sección de historial y eventos
                                 ft.Row(
                                     [
-                                        # Historial de pesos
                                         ft.Column(
                                             [
                                                 ft.Text(
                                                     "Historial de pesos",
                                                     weight=ft.FontWeight.BOLD,
                                                     color=self.color_principal,
-                                                    size=14
+                                                    size=15
                                                 ),
                                                 ft.Container(
                                                     content=self.weight_history_list,
                                                     border=ft.border.all(1, ft.Colors.GREY_300),
+                                                    bgcolor=ft.Colors.WHITE,
                                                     border_radius=5,
                                                     padding=5,
                                                     expand=True
@@ -479,11 +777,12 @@ class BasculaView:
                                                     "Registro de eventos",
                                                     weight=ft.FontWeight.BOLD,
                                                     color=self.color_principal,
-                                                    size=14
+                                                    size=15
                                                 ),
                                                 ft.Container(
                                                     content=self.event_log_list,
                                                     border=ft.border.all(1, ft.Colors.GREY_300),
+                                                    bgcolor=ft.Colors.WHITE,
                                                     border_radius=5,
                                                     padding=5,
                                                     expand=True
@@ -493,27 +792,33 @@ class BasculaView:
                                             expand=True
                                         )
                                     ],
-                                    spacing=20,
+                                    spacing=10,
+                                    
                                     expand=True,
                                 ),
                                 # Sistema de pestañas mejorado
-                                ft.Column(
-                                    [
-                                        tabs,
-                                        # Contenedor para mostrar el contenido de la pestaña seleccionadaTABS
-                                        self.tabs_container,
-                                    ],
-                                    spacing=0,
-                                    expand=True
+                                ft.Container(
+                                    content=ft.Column(
+                                        [
+                                            tabs,
+                                            # Contenedor para mostrar el contenido de la pestaña seleccionada
+                                            self.tabs_container,
+                                        ],
+                                        spacing=0,
+                                        height=480,
+                                        expand=True,
+                                    ),
+                                    bgcolor=ft.Colors.TRANSPARENT
                                 ),
+                                
                             ],
-                            spacing=20
+                            spacing=10,
                         ),
                         padding=10,
-                        bgcolor=ft.Colors.WHITE,
+                        bgcolor=ft.Colors.TRANSPARENT,
                         border_radius=10,
-                        margin=ft.margin.only(top=10),
-                        border=ft.border.all(1, ft.Colors.GREY_100),
+                        margin=ft.margin.only(top=0),
+                        border=None,
                     ),
                 ],
                 spacing=10,
@@ -612,7 +917,6 @@ class BasculaView:
             # Procesar el dato
             clean_data = data.strip() if isinstance(data, str) else str(data)
             
-            # Para pruebas, verificamos si es un número válido
             try:
                 weight_value = float(clean_data)
                 
@@ -638,6 +942,7 @@ class BasculaView:
             
             # Actualizar la UI desde el hilo principal
             self.page.update()
+
         except Exception as e:
             error_msg = f"Error procesando datos: {e}"
             print(error_msg)
