@@ -3,6 +3,7 @@ import threading
 from datetime import datetime
 from common.serial_manager import SerialManager
 from common.ui_components import UIComponents
+from common.database_manager import PesajesManager
 
 
 class BasculaView:
@@ -201,8 +202,9 @@ class BasculaView:
         )
         # Crear la vista
         self.view = self.create_tab_view()
+
     
-    def updatetab_data_table1(self):
+    def update_tab_enturnados(self):
         if not self.pagination or not self.vehicle_data:
             return
             
@@ -297,112 +299,101 @@ class BasculaView:
 
 #################################################################
 
-
-    def update_data_table2(self):
-        if not hasattr(self, 'current_folio'):
-            print("Error: No current_folio attribute found")
-            return
-            
-        # Obtener los datos de pesajes usando PesajesManager
-        pesajes_manager = PesajesManager()
-        all_data = pesajes_manager.get_pesajes_by_folio(self.current_folio)
+    def update_tab_containers(self):
+        # Verificar si existe el gestor de pesajes, si no, crearlo
+        if not hasattr(self, 'pesajes_manager'):
+            self.pesajes_manager = PesajesManager()
         
-        # Filtrar por clases específicas
-        clase_a_mostrar = ["22K2", "ISOTANQUE"]
-        filtered_data = [item for item in all_data if item.get('clase') in clase_a_mostrar]
+        # Obtener el folio actual (basado en la fecha seleccionada)
+        folio_actual = self.pesajes_manager.get_current_folio()
         
-        # Crear tabla (vacía o con datos)
-        if not filtered_data:
-            custom_table = ft.DataTable(
+        # Obtener los datos resumidos de pesajes
+        pesajes_data = self.pesajes_manager.get_pesajes_resumen(folio_actual)
+        
+        # Si no hay datos, mostrar mensaje
+        if not pesajes_data:
+            empty_table = ft.DataTable(
                 columns=[ft.DataColumn(ft.Text("Sin datos"))],
-                rows=[ft.DataRow(cells=[ft.DataCell(ft.Text("No hay datos con las clases seleccionadas"))])],
-                border=ft.border.all(1, ft.Colors.GREY_300),
-                border_radius=6,
+                rows=[ft.DataRow(cells=[ft.DataCell(ft.Text("No hay datos de pesajes para esta fecha"))])],
             )
-        else:
-            # Crear una tabla con los datos filtrados
-            custom_table = ft.DataTable(
-                columns=[
-                    ft.DataColumn(ft.Text("#", size=13, weight=ft.FontWeight.BOLD)),
-                    ft.DataColumn(ft.Text("CONTENEDOR", size=13)),
-                    ft.DataColumn(ft.Text("PRODUCTO", size=13)),
-                    ft.DataColumn(ft.Text("PESO INICIO", size=13)),
-                    ft.DataColumn(ft.Text("TARA", size=13)),
-                    ft.DataColumn(ft.Text("PESO FINAL", size=13)),
-                    ft.DataColumn(ft.Text('NETO', size=11)),
-                    ft.DataColumn(ft.Text("EQUIPO", size=13)),
-                ],
-                border=ft.border.all(1, ft.Colors.GREY_300),
-                border_radius=6,
-                vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
-                horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
-                sort_column_index=0,
-                column_spacing=8,
-                heading_row_height=30,
-                data_row_min_height=25,
-                data_row_max_height=35,
+            # Reemplazar la tabla actual en el contenido de la pestaña
+            tab_content = self.tabs_content[1]
+            container = tab_content.content.controls[1]  # El Container que contiene ListView
+            container.content.controls = [empty_table]
+            self.page.update()
+            return
+        
+        custom_table = ft.DataTable(
+            columns=[
+                ft.DataColumn(ft.Text("PROCESO", size=13, weight=ft.FontWeight.BOLD), numeric=True),
+                ft.DataColumn(ft.Text("PLACA", size=13)),
+                ft.DataColumn(ft.Text("TT / DESTINO", size=13)),
+                ft.DataColumn(ft.Text("PESO INICIAL", size=13), numeric=True),
+                ft.DataColumn(ft.Text("PESO FINAL", size=13), numeric=True),
+                ft.DataColumn(ft.Text("PESO BRUTO", size=13), numeric=True),
+                ft.DataColumn(ft.Text("", size=13 )),
+            ],
+            heading_row_color=ft.Colors.PURPLE_100,
+            horizontal_margin= 12,
+            rows=[],
+            border=ft.border.all(1, ft.Colors.GREY_300),
+            border_radius=6,
+            vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+            horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_300),
+            sort_column_index=0,
+            column_spacing=8,
+            heading_row_height=30,
+            data_row_min_height=25,
+            data_row_max_height=35,
+        )
+        
+        for item in pesajes_data:
+            # Movemos la definición de vehicle_id aquí, dentro del bucle donde 'item' está definido
+            vehicle_id = item.get('ID', None)  # Uso .get() para evitar KeyError si no existe la clave
+            
+            edit_button = ft.IconButton(
+                icon=ft.Icons.EDIT_NOTE,  # Icono de edición de notas, más sutil
+                icon_color=self.color_principal,
+                tooltip="Editar vehículo.",
+                icon_size=20,  # Tamaño más pequeño
+                on_click=lambda e, id=vehicle_id: self.on_edit_click(id) if self.on_edit_click else None
             )
             
-            # Definimos un color principal para usar en la numeración (o usamos el existente)
-            color_principal = getattr(self, 'color_principal', ft.colors.BLUE)
-            
-            for i, item in enumerate(filtered_data):
-                row_number = i + 1
-                custom_table.rows.append(
-                    ft.DataRow(
-                        cells=[
-                            ft.DataCell(ft.Text(str(row_number), size=12, weight=ft.FontWeight.BOLD, color=color_principal)),
-                            ft.DataCell(ft.Text(item.get('contenedor', ''), size=11)),
-                            ft.DataCell(ft.Text(item.get('producto', ''), size=12, weight=ft.FontWeight.BOLD)),
-                            ft.DataCell(ft.Text(str(item.get('pesoinicio', '')), size=11)),
-                            ft.DataCell(ft.Text(str(item.get('tara', '')), size=11)),
-                            ft.DataCell(ft.Text(str(item.get('pesofinal', '')), size=11)),
-                            ft.DataCell(ft.Text(str(item.get('neto', '')), size=11)),
-                            ft.DataCell(ft.Text(item.get('terminaltractor', ''), size=11)),
-                        ]
-                    )
+            custom_table.rows.append(
+                ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(str(item["Proceso"]), size=12, weight=ft.FontWeight.BOLD, color=self.color_principal)),
+                        ft.DataCell(ft.Text(str(item["Contenedor"]) if item["Contenedor"] else "", size=11)),
+                        ft.DataCell(ft.Text(str(item["TerminalTractor"]) if item["TerminalTractor"] else "", size=11)),
+                        ft.DataCell(ft.Text(str(item["Peso Inicial"]) if item["Peso Inicial"] else "0", size=11)),
+                        ft.DataCell(ft.Text(str(item["Peso Final"]) if item["Peso Final"] else "0", size=11)),
+                        ft.DataCell(ft.Text(str(item["Bruto"]) if item["Bruto"] else "0", size=11, 
+                                        weight=ft.FontWeight.BOLD, color=ft.colors.BLUE_700)),
+                        ft.DataCell(edit_button),
+                    ]
                 )
+            )
         
-        # Actualizar la tabla en tab2_content
-        # Basándonos en la estructura proporcionada
-        if hasattr(self, 'tabs_content') and len(self.tabs_content) > 1:
-            tab2_content = self.tabs_content[1]
-            
-            # Acceder a ListView en el segundo Container dentro de la columna
-            if (hasattr(tab2_content, 'content') and 
-                isinstance(tab2_content.content, ft.Column) and 
-                len(tab2_content.content.controls) > 1):
-                
-                container = tab2_content.content.controls[1]  # Segundo elemento (índice 1) en la columna
-                
-                if (isinstance(container, ft.Container) and 
-                    hasattr(container, 'content') and 
-                    isinstance(container.content, ft.ListView)):
-                    
-                    # Actualizamos los controles de ListView con la nueva tabla
-                    container.content.controls = [custom_table]
-                    
-                    # Actualizamos la página
-                    self.page.update()
-                    print("Tabla actualizada con éxito")
-                else:
-                    print("Error: La estructura del contenedor no es la esperada")
-            else:
-                print("Error: La estructura de tab2_content no es la esperada")
-        else:
-            print("Error: No se encontró tabs_content o no tiene suficientes elementos")
+        # Reemplazar la tabla actual en el contenido de la pestaña
+        tab_content = self.tabs_content[1]
+        container = tab_content.content.controls[1]  # El Container que contiene ListView
+        container.content.controls = [custom_table]
+        
+        # Actualizar la fecha en el botón (si existe)
+        if hasattr(self, 'fecha_button'):
+            self.fecha_button.text = self.pesajes_manager.fecha_seleccionada.strftime('%d/%m/%Y')
+        
+        print("Actualizando Vh externos")
 
-    def updatetab_data_table2(self):
-        """
-        Método que sirve como callback para el botón de actualización
-        Debe establecer el folio actual y luego llamar a update_data_table2
-        """
-        # Asegurarse de que self.current_folio esté establecido
-        if not hasattr(self, 'current_folio') and hasattr(self, 'get_current_folio'):
-            self.current_folio = self.get_current_folio()
-        
-        # Llamar al método de actualización
-        self.update_data_table2()
+        self.page.update()
+    
+
+    def update_tab_externos(self):
+        # Lógica para actualizar la pestaña de Externos
+        # Similar a update_tab_enturnados pero con la lógica específica para Externos
+        print("Actualizando pestaña Externos")
+        # Crear una nueva tabla con los datos de Externos
+        # ...
         
     def page_resize(self, e):
         if hasattr(self, 'overlay_imprimir') and self.overlay_imprimir in self.page.overlay:
@@ -474,9 +465,13 @@ class BasculaView:
         def on_tab_change(e):
             self.tabs_container.content = self.tabs_content[e.control.selected_index]
             
-            # Si cambiamos a la primera pestaña, actualizar la tabla
+            # Ejecutar la función correspondiente según la pestaña seleccionada
             if e.control.selected_index == 0:
-                self.updatetab_data_table1()
+                self.update_tab_enturnados()
+            elif e.control.selected_index == 1:
+                self.update_tab_containers()  # Función para la segunda pestaña
+            elif e.control.selected_index == 2:
+                self.update_tab_externos()    # Función para la tercera pestaña
                 
             self.page.update()
         
@@ -494,7 +489,7 @@ class BasculaView:
                         ft.Text("Total Vehículos", size=15, weight=ft.FontWeight.BOLD, color=self.color_principal),
                                     ft.ElevatedButton(
                                         "Actualizar", 
-                                        on_click=lambda e: self.updatetab_data_table1(), 
+                                        on_click=lambda e: self.update_data_callback(), #update_tab_enturnados
                                         icon=ft.Icons.REFRESH
                                     ),
                     ],
@@ -529,7 +524,7 @@ class BasculaView:
                         ft.Text("Total Vehículos", size=15, weight=ft.FontWeight.BOLD, color=self.color_principal),
                                     ft.ElevatedButton(
                                         "Actualizar", 
-                                        on_click=lambda e: self.updatetab_data_table2(), 
+                                        on_click=lambda e: self.update_tab_containers(), 
                                         icon=ft.Icons.REFRESH
                                     ),
                     ],
@@ -563,7 +558,7 @@ class BasculaView:
                         ft.Text("Total Vehículos", size=15, weight=ft.FontWeight.BOLD, color=self.color_principal),
                                     ft.ElevatedButton(
                                         "Actualizar", 
-                                        on_click=lambda e: self.updatetab_data_table1(), 
+                                        on_click=lambda e: self.update_tab_externos(), 
                                         icon=ft.Icons.REFRESH
                                     ),
                     ],
@@ -613,7 +608,7 @@ class BasculaView:
                 ),
                 ft.Tab(
                     tab_content=ft.Text(
-                        "Containers",
+                        "Externos",
                         size=16,
                         weight=ft.FontWeight.BOLD,
                         color=self.color_principal,
@@ -622,7 +617,7 @@ class BasculaView:
                 ),
                 ft.Tab(
                     tab_content=ft.Text(
-                        "Externos",
+                        "Containers",
                         size=16,
                         #bgcolor=ft.Colors.BLACK12,
                         weight=ft.FontWeight.BOLD,
@@ -996,7 +991,6 @@ class BasculaView:
         self.page.snack_bar.open = True
         self.page.update()
     
-# Código para añadir a BasculaView
 
     def show_config_modal(self, e=None):
         """Mostrar el modal de configuración del puerto serial"""
@@ -1014,7 +1008,6 @@ class BasculaView:
                 parent_view=self  # Esta es la clave: pasar self como parent_view
             )
             
-            # Mostrar el modal
             config_modal.show()
             
         except Exception as e:
@@ -1023,13 +1016,6 @@ class BasculaView:
             traceback.print_exc()
 
 
-    # Asegúrate de que el botón de configuración esté conectado a este método
-    # Modifica esta línea en tu constructor:
-        self.config_button = ft.IconButton(
-        icon=ft.Icons.SETTINGS,
-        tooltip="Configuración avanzada",
-        on_click=self.show_config_modal  # Conectar al método
-    )
         
     def update_connection_status(self, is_connected, port_name):
         """

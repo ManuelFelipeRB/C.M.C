@@ -17,6 +17,7 @@ class CMCView:
                     content=ft.Row(
                         [
                             self.stat_cards['total'].get_card(),
+                            self.stat_cards['inspeccion'].get_card(),
                             self.stat_cards['entrando'].get_card(),
                             self.stat_cards['proceso'].get_card(),
                             self.stat_cards['finalizado'].get_card(),

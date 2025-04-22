@@ -1,5 +1,6 @@
 import pyodbc
 import flet as ft
+from datetime import datetime
 
 class DatabaseManager:
     def __init__(self):
@@ -218,10 +219,13 @@ class DatabaseManager:
             conn.close()
 
 
+
 class PesajesManager:    
     
     def __init__(self):
         self.conn_str = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=\\ttrafejt2k02\Shared\Safety Program\CEV 2021\BaseDatos\DBIsotanques1\Isotanques.mdb'
+        self.fecha_seleccionada = datetime.now()
+        self.fecha_numerica_excel = (self.fecha_seleccionada - datetime(1900, 1, 1)).days + 2
 
     def connect(self):
         try:
@@ -230,7 +234,20 @@ class PesajesManager:
             print(f"Error de conexión a la base de datos: {e}")
             return None
 
-    def get_pesajes_by_folio(self, folio):
+    def get_pesajes_by_folio(self, folio=None):
+        """
+        Obtiene los pesajes asociados a un folio específico
+        
+        Args:
+            folio: El número de folio para filtrar. Si es None, usa la fecha numérica actual.
+            
+        Returns:
+            Lista de diccionarios con los datos de pesajes
+        """
+        # Si no se proporciona un folio, usar la fecha numérica actual
+        if folio is None:
+            folio = self.fecha_numerica_excel
+            
         conn = self.connect()
         if not conn:
             return []
@@ -242,7 +259,7 @@ class PesajesManager:
                        pesoinicio, basculainicio, usuarioinicio, fechahorafinal, 
                        pesofinal, basculafinal, usuariofinal, tara, neto, referencia, 
                        clase, terminaltractor
-                FROM Pesajes1
+                FROM TablaPesajes2
                 WHERE folio = ?
                 ORDER BY consecutivo
             """
@@ -256,25 +273,63 @@ class PesajesManager:
 
             return result
         except pyodbc.Error as e:
-            print(f"Error al consultar datos en Pesajes1: {e}")
+            print(f"Error al consultar datos en TablaPesajes2: {e}")
             return []
         finally:
             cursor.close()
             conn.close()
 
-    def build_table(self, data):
-        if not data:
-            return ft.Text("No hay datos disponibles", color="red")
+    def get_current_folio(self):
+        """
+        Retorna el folio actual basado en la fecha numérica de Excel
+        
+        Returns:
+            El número de folio actual
+        """
+        return self.fecha_numerica_excel
 
-        # Crear encabezados
-        columns = [ft.DataColumn(ft.Text(key)) for key in data[0].keys()]
 
-        # Crear filas
-        rows = []
-        for item in data:
-            row = ft.DataRow(
-                cells=[ft.DataCell(ft.Text(str(item[key]) if item[key] is not None else "")) for key in item]
-            )
-            rows.append(row)
+    def get_pesajes_resumen(self, folio=None):
+        """
+        Obtiene un resumen de pesajes con las 5 columnas requeridas
+        """
+        # Si no se proporciona un folio, usar la fecha numérica actual
+        if folio is None:
+            folio = self.fecha_numerica_excel
+            
+        conn = self.connect()
+        if not conn:
+            return []
 
-        return ft.DataTable(columns=columns, rows=rows)
+        cursor = conn.cursor()
+        try:
+            # Consulta adaptada a las columnas reales de la tabla
+            query = """
+                SELECT Proceso, IdentificacionPlaca,Terminaltractor, PesoInicial, PesoFinal, PesoBruto
+                FROM TablaPesajes2
+                WHERE Folio = ?
+                ORDER BY Id
+            """
+            cursor.execute(query, (folio,))
+            rows = cursor.fetchall()
+            
+            # Crear lista de diccionarios con las columnas mapeadas correctamente
+            result = []
+            for row in rows:
+                result.append({
+                    "Proceso": row.Proceso,
+                    "Contenedor": row.IdentificacionPlaca, 
+                    "TerminalTractor": row.Terminaltractor,
+                    "Peso Inicial": row.PesoInicial,
+                    "Peso Final": row.PesoFinal,
+                    "Bruto": row.PesoBruto  # Usando PesoBruto en lugar de neto
+                })
+
+            return result
+            
+        except pyodbc.Error as e:
+            print(f"Error al consultar datos en la Tabla_Pesajes2: {e}")
+            return []
+        finally:
+            cursor.close()
+            conn.close()

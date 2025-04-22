@@ -264,9 +264,10 @@ class VehicleData:
         self.totals = {
             'total_pesajes': 0,
             'total_entrando': 0,
+            'total_inspeccion': 0,
             'total_finalizados': 0,
             'total_proceso': 0,
-            'total_pendiente': 0
+            'total_pendiente': 0,
         }
     
     def load_data(self, fecha_numerica_excel):
@@ -310,7 +311,8 @@ class VehicleData:
             self._count_state(row.Estado)
         
         self.totals['total_pesajes'] = len(self.data)
-        self.totals['total_pendiente'] = self.totals['total_pesajes'] - self.totals['total_entrando']- self.totals['total_proceso'] - self.totals['total_finalizados']
+        self.totals['total_pendiente'] = self.totals['total_pesajes']- self.totals['total_entrando']- self.totals['total_proceso']- self.totals['total_finalizados']- self.totals['total_inspeccion']
+        self.filtered_data = self.data
         self.filtered_data = self.data
         
     def _count_state(self, estado):
@@ -320,6 +322,8 @@ class VehicleData:
             self.totals['total_proceso'] += 1
         elif estado == "Transito entrando":
             self.totals['total_entrando'] += 1
+        elif estado == "En inspeccion":
+            self.totals['total_inspeccion'] += 1
     
     def reset_counters(self):
         for key in self.totals:
@@ -328,6 +332,8 @@ class VehicleData:
     def apply_filter(self, filtro):
         if filtro == 'todos':
             self.filtered_data = self.data
+        elif filtro == 'inspeccion':
+            self.filtered_data = [item for item in self.data if item['Estado'] == 'En inspeccion']
         elif filtro == 'en_proceso':
             self.filtered_data = [item for item in self.data if item['Estado'] == 'En proceso']
         elif filtro == 'entrando':
@@ -337,6 +343,7 @@ class VehicleData:
         elif filtro == 'pendiente':
             self.filtered_data = [item for item in self.data if item['Estado'] != 'En proceso' and 
                                                                  item['Estado'] != 'Finalizado' and 
+                                                                 item['Estado'] != 'En inspeccion' and
                                                                  item['Estado'] != 'Transito entrando']
         return self.filtered_data
     

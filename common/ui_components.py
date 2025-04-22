@@ -8,7 +8,7 @@ import sys
 from datetime import datetime
 
 class UIComponents:
-    def __init__(self, page, color_principal):
+    def __init__(self, page, fecha_button):
         self.page = page
         self.color_principal ="#9C5BAC" # color_principal #8c4191
         self.color_secundario = "#f1ffff"
@@ -60,7 +60,6 @@ class UIComponents:
                 ft.DataColumn(ft.Text("PROCESO", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("CLIENTE", size=13, color=self.color_principal)),
                 ft.DataColumn(ft.Text("ESTADO", size=13, color=self.color_principal)),
-                
                 ft.DataColumn(ft.Text("", size=13 )),
                 
             ],

@@ -50,6 +50,7 @@ def index():
     pesajes1_data = []
     total_finalizados = 0  # Contador de registros con Estado "Finalizado"
     total_proceso = 0  
+    total_inspeccion = 0
     total_pendiente = 0
     filtered_data = []
 
@@ -69,7 +70,9 @@ def index():
             total_finalizados += 1
         # Contar registros con estado "En proceso"
         elif row.Estado == "En proceso":
-            total_proceso += 1    
+            total_proceso += 1  
+        elif row.Estado == "En inspeccion":
+            total_inspeccion += 1  
 
     total_pesajes1 = len(pesajes1_data)
     total_pendiente = total_pesajes1 - total_proceso - total_finalizados
@@ -81,6 +84,8 @@ def index():
         filtered_data = [item for item in pesajes1_data if item['Estado'] == 'En proceso']
     elif filtro == 'finalizado':
         filtered_data = [item for item in pesajes1_data if item['Estado'] == 'Finalizado']
+    elif filtro == 'inspeccion':
+        filtered_data = [item for item in pesajes1_data if item['Estado'] != 'En inspeccion'and item['Estado'] != 'Finalizado']
     elif filtro == 'pendiente':
         filtered_data = [item for item in pesajes1_data if item['Estado'] != 'En proceso' and item['Estado'] != 'Finalizado']
 
@@ -95,6 +100,7 @@ def index():
                           total_pesajes1=total_pesajes1, 
                           total_finalizados=total_finalizados, 
                           total_proceso=total_proceso, 
+                          total_inspeccion=total_inspeccion, 
                           total_pendiente=total_pendiente,
                           filtro_activo=filtro)
 

@@ -9,8 +9,6 @@ from common.database_manager import DatabaseManager
 from views.serial_config_modal import SerialConfigModal
 from EditVehicle_modal import EditVehicleModal
 from EditVehicle_modal import VehicleData
-
-# Importar las clases
 from common.pagination import PaginationManager
 from common.filter import FilterManager
 from common.ui_components import UIComponents
@@ -73,7 +71,7 @@ class ControlCargaApp:
             self.stat_cards, 
             self.data_table, 
             self.pagination,
-            self.update_data
+            self.update_data,
         )
         self.documentation_view = DocumentationView(page, self.color_principal, self.color_secundario)
         self.view_docs = self.documentation_view.get_view()
@@ -115,21 +113,28 @@ class ControlCargaApp:
             'total': StatCard(
                 self.page,
                 ft.Icons.VISIBILITY_OUTLINED,
-                "Total Veh",
+                "Total Veh.",
                 self.color_principal,
                 lambda e: self.handle_card_click('todos')
             ),
+            'inspeccion': StatCard(
+                self.page,
+                ft.Icons.INVENTORY_OUTLINED,
+                "Inspección",
+                self.color_principal,
+                lambda e: self.handle_card_click('inspeccion')
+            ),
             'entrando': StatCard(
                 self.page,
-                ft.Icons.DIRECTIONS_BUS_OUTLINED,
-                "Entrando",
+                ft.Icons.NO_CRASH_OUTLINED,
+                "Tránsito",
                 self.color_principal,
                 lambda e: self.handle_card_click('entrando')
             ),
             'proceso': StatCard(
                 self.page,
                 ft.Icons.COMPARE_ARROWS_OUTLINED,
-                "Proceso",
+                "En proceso",
                 self.color_principal,
                 lambda e: self.handle_card_click('en_proceso')
             ),
@@ -328,6 +333,7 @@ class ControlCargaApp:
         """Actualizar valores de las tarjetas estadísticas"""
         totals = self.vehicle_data.totals
         self.stat_cards['total'].update_value(totals['total_pesajes'])
+        self.stat_cards['inspeccion'].update_value(totals['total_inspeccion'])
         self.stat_cards['entrando'].update_value(totals['total_entrando'])
         self.stat_cards['proceso'].update_value(totals['total_proceso'])
         self.stat_cards['finalizado'].update_value(totals['total_finalizados'])
@@ -339,6 +345,7 @@ class ControlCargaApp:
         for card_name, card in self.stat_cards.items():
             is_active = (
                 (card_name == 'total' and current_filter == 'todos') or
+                (card_name == 'inspeccion' and current_filter == 'inspeccion') or
                 (card_name == 'entrando' and current_filter == 'entrando') or
                 (card_name == 'proceso' and current_filter == 'en_proceso') or
                 (card_name == 'finalizado' and current_filter == 'finalizado') or
